@@ -1,30 +1,37 @@
-import { Button,
-Navbar,
-NavbarBrand,
-NavbarContent
- } from "@nextui-org/react"
+import React from "react";
+import Login from "./pages/login/login";
+import Register from "./pages/register/register";
+import Dashboard from "./pages/dashboard/dashboard";
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route
+} from "react-router-dom"
+import General from "./pages/dashboard/menus/general";
+import Estadisticas from "./pages/dashboard/menus/estadisticas";
+import Actividad from "./pages/dashboard/menus/actividad";
+import Home from "./pages/home/home";
+import CrearTablas from "./pages/dashboard/menus/creadorTablas";
 
 function App() {
+ 
+    return (
+        <Router>
+            <Routes> 
+                <Route path="/" element={<Home />}/>
+                <Route path="/login" element={<Login />}/>
+                <Route path="/register" element={<Register />}/>
+                <Route path="/dashboard" element={<Dashboard />}>
+                 <Route path="/dashboard/estadisticas" element={<Estadisticas/>}/>
+                 <Route path="/dashboard/actividad" element={<Actividad/>}/>
+                 <Route path="/dashboard/general" element={<General />}/>
+                 <Route path="/dashboard/creador" element={<CrearTablas />}/>
 
-  return (
-    <>
-      <Navbar>
-        <NavbarBrand>
-          <NavbarContent>NextUI</NavbarContent>
-        </NavbarBrand>
-        <NavbarContent>
-          <Button variant="outline">Ayuda</Button>
-          <Button>Cuenta</Button>
-        </NavbarContent>
-      </Navbar>
-      <div className=" flex justify-center align-center ">
-    <div className=" flex justify-center flex-col	 w-72 h-80 mt-[5rem] bg-slate-200 rounded-lg">
-      <h1 className="text-3xl font-bold">Bienvenido</h1>
-      <Button color="primary" >Iniciar Sesión</Button>
-    </div>
-      </div>
-    </>
-  )
-}
+                </Route>
 
-export default App
+            </Routes>
+        </Router>
+    )
+};
+
+export default App;
