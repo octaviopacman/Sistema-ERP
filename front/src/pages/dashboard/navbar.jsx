@@ -23,18 +23,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-  const menuItems = [
-    "Perfil",
-    "Dashboard",
-    "Activity",
-    "Analytics",
-    "System",
-    "Deployments",
-    "My Settings",
-    "Team Settings",
-    "Help & Feedback",
-    "Log Out",
-  ];
+  
   const pathname = useLocation();
   return (
     <Navbar onMenuOpenChange={setIsMenuOpen}>
@@ -81,10 +70,10 @@ export default function NavBar() {
 
 
         <NavbarMenu className="md:w-1/5">
-          <NavbarItem><i className="bi bi-house"></i> Dashboard</NavbarItem>
-          <NavbarItem><i className="bi bi-activity"></i> Actividad</NavbarItem>
-          <NavbarItem><i className="bi bi-bar-chart"></i> Estadísticas</NavbarItem>
-          <NavbarItem><i className="bi bi-bar-chart"></i> Creador</NavbarItem>
+          <NavbarItem><a href="/dashboard"><i className="bi bi-house"></i>  Dashboard </a> </NavbarItem>
+          <NavbarItem><a href="/dashboard/actividad"><i className="bi bi-activity"></i>  Actividad </a></NavbarItem>
+          <NavbarItem><a href="/dashboard/estadisticas"><i className="bi bi-bar-chart"></i> Estadísticas </a></NavbarItem>
+          <NavbarItem><a href="/dashboard/creador"> <i className="bi bi-bar-chart"></i> Creador </a></NavbarItem>
         </NavbarMenu>
       </NavbarContent>
 

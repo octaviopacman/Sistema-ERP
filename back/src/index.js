@@ -8,7 +8,7 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: "http://186.39.27.211:5173",
+    origin: "http://186.39.56.136:5173",
   })
 ); 
 app.use(morgan("dev"));
