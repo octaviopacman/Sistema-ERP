@@ -4,7 +4,7 @@ import sequelize from "../config/db.js";
 const User = sequelize.define(
   "Users",
   {
-    id:{
+    id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
@@ -22,12 +22,16 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    role: {
+      type: DataTypes.STRING,
+      defaultValue: "user",
+    },
   },
   {
     timestamps: true,
   }
 );
 
-User.sync({ alter: true });
+User.sync({alter: true});
 
 export default User;
