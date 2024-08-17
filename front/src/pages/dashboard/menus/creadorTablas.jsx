@@ -40,7 +40,30 @@ export default function CrearTablas() {
     setCampos(camposNuevos);
     setIsDeleting(false);
   };
+  const dataStructure = (data) => {
+    const datosEstructurados = {
+      table_title: data.title,
+      table_columns: [],
+    };
+
+    campos.forEach((valor, i) => {
+      let newObj = {};
+      for (let prop in data) {
+        if (prop[0] == i + 1) {
+          let str = prop.slice(1);
+          newObj[str] = data[prop];
+        }
+      }
+      if (Object.keys(newObj).length > 0) {
+        datosEstructurados.table_columns.push(newObj);
+      }
+    });
+    return datosEstructurados;
+  };
+
   const handlerSubmitEliminar = (e) => {
+    // hacer: se podria hacer el idField un array para que almacene todos los id que se eliminaron en la sesion y en la funcion submit se itera en el array:idField,
+    // para que elimine del objeto "data" los datos que tengan el array:idField
     console.log(campos[0].key);
     const id = e.target.id;
     const camposNuevos = campos.filter((campo) => id !== Number(campo.key));
@@ -57,30 +80,17 @@ export default function CrearTablas() {
           delete data[prop];
         }
       }
-      return console.log(data);
+      const datos = dataStructure(data);
+      return console.log(datos);
     }
     for (const prop in data) {
       if (parseInt(prop[0]) === idField) {
         delete data[prop];
       }
     }
-    const datosEstructurados = {
-      table_title: data.title,
-      table_columns: [],
-    };
+    const datos = dataStructure(data);
+    console.log(datos);
 
-    campos.forEach((valor, i) => {
-      let newObj = {};
-      for (let prop in data) {
-        if (prop[0] == i + 1) {
-          let str = prop.slice(1);
-          newObj[str] = data[prop];
-        }
-      }
-      datosEstructurados.table_columns.push(newObj);
-    });
-
-    console.log(datosEstructurados);
     /* 
         createTable(data) */
   });
