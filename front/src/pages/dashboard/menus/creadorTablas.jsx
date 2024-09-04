@@ -60,6 +60,8 @@ export default function CrearTablas() {
               console.log(cont);
               if (cont > 1) {
                 setMessageError("hay mas de una primary Key");
+              } else if (cont <= 0) {
+                setMessageError("no hay primary Key");
               } else {
                 newObj[str] = data[prop];
               }
