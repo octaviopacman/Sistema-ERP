@@ -6,8 +6,9 @@ import {
   ModalContent,
   ModalHeader,
   ModalFooter,
+  ModalBody,
 } from "@nextui-org/react";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import FieldGenerate from "../../../components/FieldGenerate";
 import {useForm} from "react-hook-form";
 /* const tablaCol = {
@@ -23,6 +24,7 @@ export default function CrearTablas() {
   const [isDeleting, setIsDeleting] = React.useState(false);
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
   const [messageError, setMessageError] = useState("");
+  let cont = 0;
 
   const [campos, setCampos] = React.useState([
     <FieldGenerate key={0} register={register} count={0} />,
@@ -47,21 +49,16 @@ export default function CrearTablas() {
       table_columns: [],
     };
 
-    let cont = 0;
     campos.forEach((valor, i) => {
       let newObj = {};
-      console.log("hola");
       for (let prop in data) {
         if (prop[0] == i + 1) {
           let str = prop.slice(1);
           if (str === "PrimaryKey") {
             if (data[prop]) {
               cont += 1;
-              console.log(cont);
               if (cont > 1) {
                 setMessageError("hay mas de una primary Key");
-              } else if (cont <= 0) {
-                setMessageError("no hay primary Key");
               } else {
                 newObj[str] = data[prop];
               }
@@ -75,9 +72,9 @@ export default function CrearTablas() {
       }
       if (Object.keys(newObj).length > 0) {
         datosEstructurados.table_columns.push(newObj);
-        console.log(messageError);
       }
     });
+    cont = 0;
     return datosEstructurados;
   };
 
@@ -94,26 +91,32 @@ export default function CrearTablas() {
     console.log(campos);
   };
   const submit = handleSubmit((data) => {
-    if (isDeleting) {
+    if (!messageError) {
+      if (isDeleting) {
+        for (const prop in data) {
+          if (parseInt(prop[0]) === idField) {
+            delete data[prop];
+          }
+        }
+        const datos = dataStructure(data);
+        return console.log(datos);
+      }
       for (const prop in data) {
         if (parseInt(prop[0]) === idField) {
           delete data[prop];
         }
       }
       const datos = dataStructure(data);
-      return console.log(datos);
-    }
-    for (const prop in data) {
-      if (parseInt(prop[0]) === idField) {
-        delete data[prop];
-      }
-    }
-    const datos = dataStructure(data);
-    console.log(datos);
+      console.log(datos);
 
-    /* 
-        createTable(data) */
+      /* 
+    createTable(data) */
+    }
   });
+  useEffect(() => {
+    const timer = setTimeout(() => setMessageError(""), 2000);
+    return () => clearTimeout(timer);
+  }, [messageError]);
   return (
     <>
       <div className="p-5">
@@ -156,6 +159,11 @@ export default function CrearTablas() {
                     <ModalHeader className="flex flex-col gap-1">
                       ¿Estas seguro de crear esta tabla?
                     </ModalHeader>
+                    <ModalBody>
+                      {messageError && (
+                        <p className="text-red-500 text-sm">{messageError}</p>
+                      )}
+                    </ModalBody>
                     <ModalFooter>
                       <Button color="danger" variant="flat" onPress={onClose}>
                         Volver
