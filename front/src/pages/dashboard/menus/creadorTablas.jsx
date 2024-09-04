@@ -7,7 +7,7 @@ import {
   ModalHeader,
   ModalFooter,
 } from "@nextui-org/react";
-import React from "react";
+import React, {useState} from "react";
 import FieldGenerate from "../../../components/FieldGenerate";
 import {useForm} from "react-hook-form";
 /* const tablaCol = {
@@ -22,6 +22,7 @@ export default function CrearTablas() {
   const [idField, setIdField] = React.useState(null);
   const [isDeleting, setIsDeleting] = React.useState(false);
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
+  const [messageError, setMessageError] = useState("");
 
   const [campos, setCampos] = React.useState([
     <FieldGenerate key={0} register={register} count={0} />,
@@ -46,16 +47,33 @@ export default function CrearTablas() {
       table_columns: [],
     };
 
+    let cont = 0;
     campos.forEach((valor, i) => {
       let newObj = {};
+      console.log("hola");
       for (let prop in data) {
         if (prop[0] == i + 1) {
           let str = prop.slice(1);
-          newObj[str] = data[prop];
+          if (str === "PrimaryKey") {
+            if (data[prop]) {
+              cont += 1;
+              console.log(cont);
+              if (cont > 1) {
+                setMessageError("hay mas de una primary Key");
+              } else {
+                newObj[str] = data[prop];
+              }
+            } else {
+              newObj[str] = data[prop];
+            }
+          } else {
+            newObj[str] = data[prop];
+          }
         }
       }
       if (Object.keys(newObj).length > 0) {
         datosEstructurados.table_columns.push(newObj);
+        console.log(messageError);
       }
     });
     return datosEstructurados;
