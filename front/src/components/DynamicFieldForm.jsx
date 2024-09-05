@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Input, Autocomplete, AutocompleteItem, Button, Checkbox } from "@nextui-org/react";
 import { mysqlDataTypes } from "../helpers/dataTypes";
 
+// Componente FieldGenerate
 function FieldGenerate({ register, count, onDelete }) {
   return (
     <div className="flex">
@@ -66,7 +67,7 @@ function FieldGenerate({ register, count, onDelete }) {
             size="sm"
             className="text-red-500"
             variant="primary"
-            onClick={() => onDelete(count)} // Asegúrate de que onDelete esté definido
+            onClick={() => onDelete(count)} // Asegúrate de que onDelete está pasando correctamente
           >
             Eliminar Campo
           </Button>
@@ -76,4 +77,51 @@ function FieldGenerate({ register, count, onDelete }) {
   );
 }
 
-export default FieldGenerate;
+// Componente DynamicFieldForm
+function DynamicFieldForm({ register, onDelete }) {
+  const [fieldCount, setFieldCount] = useState(1);
+
+  const handleFieldCountChange = (e) => {
+    const value = e.target.value;
+    if (value === '' || parseInt(value) >= 0) {
+      setFieldCount(value);
+    }
+  };
+
+  const handleFieldCountBlur = () => {
+    if (fieldCount === '' || parseInt(fieldCount) < 1) {
+      setFieldCount(1);
+    } else {
+      setFieldCount(parseInt(fieldCount));
+    }
+  };
+
+  const fieldsArray = [...Array(fieldCount).keys()];
+
+  return (
+    <div>
+      <Input
+        type="number"
+        label="Número de campos"
+        min={1}
+        value={fieldCount}
+        onChange={handleFieldCountChange}
+        onBlur={handleFieldCountBlur}
+        placeholder="¿Cuántos campos quieres crear?"
+      />
+      <div>
+        {fieldsArray.map((index) => (
+          <FieldGenerate 
+            key={index} 
+            register={register} 
+            count={index} 
+            onDelete={onDelete} // Asegúrate de pasar la función onDelete aquí
+          />
+        ))}
+      </div>
+      <Button type="submit">Submit</Button>
+    </div>
+  );
+}
+
+export default DynamicFieldForm;
