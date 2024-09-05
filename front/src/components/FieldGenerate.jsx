@@ -1,32 +1,31 @@
+import React, { useState } from "react";
 import {
   Input,
   Autocomplete,
   Checkbox,
   AutocompleteItem,
+  Button,
 } from "@nextui-org/react";
+import { mysqlDataTypes } from "../helpers/dataTypes";
 
-import {mysqlDataTypes} from "../helpers/dataTypes";
-
-function FieldGenerate({register, count}) {
-  count += 1;
-
+function FieldGenerate({ register, count }) {
   return (
     <div className="flex">
       <div>
         <Input
-          id={count}
+          id={`field-name-${count}`}
           label="Nombre"
           placeholder="Nombre..."
-          {...register(`${count}name`)}
+          {...register(`fields[${count}].name`)}
         />
       </div>
       <div>
         <Autocomplete
-          id={count}
+          id={`field-type-${count}`}
           defaultItems={mysqlDataTypes}
           label="Tipo de dato"
           placeholder="Integer"
-          {...register(`${count}dataType`)}>
+          {...register(`fields[${count}].dataType`)}>
           {(datatype) => (
             <AutocompleteItem key={datatype.value}>
               {datatype.label}
@@ -38,36 +37,83 @@ function FieldGenerate({register, count}) {
         <Input
           type="Number"
           label="Cantidad"
-          id={count}
+          id={`field-length-${count}`}
           placeholder="Ingrese la longitud"
-          {...register(`${count}length`)}
+          {...register(`fields[${count}].length`)}
         />
       </div>
       <div className="flex gap-5 ml-4">
         <div className="flex flex-col items-center gap-2">
-          <label className="h-fit"> Auto Increment</label>
+          <label className="h-fit">Auto Increment</label>
           <Checkbox
             className="h-fit"
-            id={count}
-            {...register(`${count}AutoIncrement`)}></Checkbox>
+            id={`field-autoincrement-${count}`}
+            {...register(`fields[${count}].autoIncrement`)}
+          />
         </div>
         <div className="flex flex-col items-center gap-2">
-          <label className="h-fit"> Primary key</label>
+          <label className="h-fit">Primary key</label>
           <Checkbox
             className="h-fit"
-            id={count}
-            {...register(`${count}PrimaryKey`)}></Checkbox>
+            id={`field-primarykey-${count}`}
+            {...register(`fields[${count}].primaryKey`)}
+          />
         </div>
         <div className="flex flex-col items-center gap-2">
-          <label className="h-fit"> Not Null</label>
+          <label className="h-fit">Not Null</label>
           <Checkbox
             className="h-fit"
-            id={count}
-            {...register(`${count}NotNull`)}></Checkbox>
+            id={`field-notnull-${count}`}
+            {...register(`fields[${count}].notNull`)}
+          />
         </div>
+
       </div>
     </div>
   );
 }
 
-export default FieldGenerate;
+function DynamicFieldForm({ register }) {
+  const [fieldCount, setFieldCount] = useState(1);
+
+  const handleFieldCountChange = (e) => {
+   const value = e.target.value;
+   if (value === '' || parseInt(value) >= 0) {
+    setFieldCount(value)
+  }
+  console.log(value)
+  };
+
+  const handleFieldCountBlur = () => {
+    if (fieldCount === '' || parseInt(fieldCount) < 1) {
+      setFieldCount(1);
+
+    } else {
+      setFieldCount(parseInt(fieldCount))
+    }
+  }
+
+  const fieldsArray = [...Array(fieldCount).keys()];
+
+  return (
+    <div>
+      <Input
+        type="number"
+        label="Número de campos"
+        min={1}
+        value={fieldCount}
+        onChange={handleFieldCountChange}
+        onBlur={handleFieldCountBlur}
+        placeholder="¿Cuántos campos quieres crear?"
+      />
+      <div>
+        {fieldsArray.map((index) => (
+          <FieldGenerate key={index} register={register} count={index} />
+        ))}
+      </div>
+      <Button type="submit">Submit</Button>
+    </div>
+  );
+}
+
+export default DynamicFieldForm;

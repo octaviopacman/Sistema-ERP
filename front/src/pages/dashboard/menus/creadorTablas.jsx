@@ -117,6 +117,7 @@ export default function CrearTablas() {
     const timer = setTimeout(() => setMessageError(""), 2000);
     return () => clearTimeout(timer);
   }, [messageError]);
+  console.log(campos)
   return (
     <>
       <div className="p-5">
@@ -139,14 +140,14 @@ export default function CrearTablas() {
                       variant="primary"
                       onClick={handlerSubmitEliminar}
                       id={i}>
-                      Eliminar
+                      Eliminar todos los campos
                     </Button>
                   </div>
                 </div>
               );
             })}
           </div>
-          <div className="text-center">
+          <div className="text-center flex flex-row gap-3 justify-center w-full">
             <Button onPress={onOpen}>Crear Tabla</Button>
             <Button onClick={handleClickerSubmit}>Agregar Campo</Button>
             <Modal
