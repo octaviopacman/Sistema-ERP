@@ -1,10 +1,10 @@
 import React from "react";
-import { Input, Autocomplete, AutocompleteItem, Button, Checkbox } from "@nextui-org/react";
+import { Input, Autocomplete, AutocompleteItem, Button, Checkbox, Select, table, SelectItem } from "@nextui-org/react";
 import { mysqlDataTypes } from "../helpers/dataTypes";
 
-function FieldGenerate({ register, count, onDelete }) {
+function FieldGenerate({ register, count, onDelete, avaibleTablas }) {
   return (
-    <div className="flex">
+    <div className="flex flex-wrap gap-4 mb-4">
       <div>
         <Input
           id={`field-name-${count}`}
@@ -26,6 +26,20 @@ function FieldGenerate({ register, count, onDelete }) {
             </AutocompleteItem>
           )}
         </Autocomplete>
+      </div>
+      <div>
+        <Select
+        id={`field-nested-table-${count}`}
+        label="Anidar en otra tabla"
+        placeholder="Selecciona Una Tabla"
+        {...register(`fields[${count}].nestedTable`)}
+        >
+          {avaibleTablas.map((table) => (
+            <SelectItem key={table.id} value={table.name}>
+              {table.name}
+            </SelectItem>
+          ))}
+        </Select>
       </div>
       <div>
         <Input

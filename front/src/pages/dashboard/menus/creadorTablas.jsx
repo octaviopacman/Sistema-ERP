@@ -11,6 +11,7 @@ import {
 import React, { useEffect, useState } from "react";
 import FieldGenerate from "../../../components/FieldGenerate";
 import { useForm } from "react-hook-form";
+import TableManager from "../../../components/TableManager";
 
 export default function CrearTablas() {
   const { handleSubmit, register } = useForm();
@@ -18,21 +19,24 @@ export default function CrearTablas() {
   const [isDeleting, setIsDeleting] = useState(false);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [messageError, setMessageError] = useState("");
+  const [avaibleTablas, setAvaibleTablas] = useState([]);
+  const [campos, setCampos] = useState([{ id: 0 }]);  
+  const [numCampos, setNumCampos] = useState(1);
   let cont = 0;
 
-  const [campos, setCampos] = useState([{ id: 0 }]);
-  const [numCampos, setNumCampos] = useState(1);
+  
 
   const datosEnviar = (data) => {
     return {
       tableTitle: data.title,
-      fields: data.fields.map(field => ({
+      fields: data.fields.map((field) => ({
         name: field.name,
         dataType: field.dataType,
         length: field.length,
         autoIncrement: field.autoIncrement,
         primaryKey: field.primaryKey,
         notNull: field.notNull,
+        nestedTable: field.nestedTable || null,
       })),
     };
   };
@@ -135,21 +139,38 @@ export default function CrearTablas() {
   
 
   useEffect(() => {
-    const timer = setTimeout(() => setMessageError(""), 2000);
-    return () => clearTimeout(timer);
-  }, [messageError]);
-
+    const fetchAvaibleTablas = async () => {
+      try {
+        const response = await fetch('THIAGO HACE PARA QUE PUEDA OBTENER LAS TABLAS',{
+          method:'GET',
+          headers: {
+            "Content-Type": "application.json",
+          },
+        });
+        if (!response.ok) {
+          throw new Error('Error al obtener las tablas disponibles')
+        }
+        const tablas = await response.json();
+        setAvaibleTablas(tablas); 
+      } catch {
+        console.error("ERROR AL CARGAR LAS TABLAS DISPONIBLES", error)
+      }
+    }
+  fetchAvaibleTablas();
+},[]);
   return (
     <div className="p-5">
       <form onSubmit={submit}>
         <Input
+        className="mb-2"
           label="Título de Tabla"
           placeholder="Título..."
           name="title"
           {...register(`title`, { required: true })}
         />
-        <div className="p-3">
+        <div className="p-3 mb-4">
           <Input
+          className="mb-3"
             type="number"
             label="Número de campos"
             min={1}
@@ -162,6 +183,7 @@ export default function CrearTablas() {
               <FieldGenerate
                 register={register}
                 count={campo.id}
+                avaibleTablas={avaibleTablas}
                 onDelete={handleEliminarCampo}
               />
             </div>
@@ -203,6 +225,7 @@ export default function CrearTablas() {
           </Modal>
         </div>
       </form>
+      
     </div>
   );
 }
