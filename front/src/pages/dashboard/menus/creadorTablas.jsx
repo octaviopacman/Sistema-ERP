@@ -70,9 +70,10 @@ export default function CrearTablas() {
   };
 
   const dataStructure = (data) => {
+    console.log(data);
     const datosEstructurados = {
       table_title: data.title,
-      table_columns: [],
+      table_columns: data.fields,
     };
 
     campos.forEach((valor, i) => {
@@ -110,8 +111,8 @@ export default function CrearTablas() {
 
   const submit = handleSubmit(async (data) => {
     if (!messageError) {
-      const preparedData = prepareDataToSend(data);
-  
+      const preparedData = dataStructure(data);
+      console.log('Datos enviados:', preparedData);
       try {
         const response = await fetch('thiago mandale dale', {
           method: 'POST',
