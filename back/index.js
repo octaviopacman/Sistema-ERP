@@ -2,8 +2,10 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
-import router from "./routes/user.routes.js";
-import routerTables from "./routes/table.routes.js";
+import router from "./src/routes/user.routes.js";
+import routerTables from "./src/routes/table.routes.js";
+// import routerCompany from "./src/routes/company.routes.js";
+
 const app = express();
 
 app.use(
@@ -19,6 +21,7 @@ app.use(express.urlencoded({extended: true}));
 
 app.use("/api", router);
 app.use("/api/tables", routerTables);
+/* app.use('/api/company', routerCompany); */
 
 //para que devuelva el error si es que hay alguno
 app.use((error, req, res, next) => {

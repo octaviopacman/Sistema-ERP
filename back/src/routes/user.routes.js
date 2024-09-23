@@ -1,5 +1,5 @@
 import express from "express";
-import validateSchema from "../middlewares/validaciones.middleware.js";
+import {validateSchema} from "../middlewares/validaciones.middleware.js";
 import {revisarCookie} from "../middlewares/autorizacion.middleware.js";
 import { loginSchema, registerSchema } from "../schemas/user.schemas.js";
 import {loginUser, registerUser, profileUser  } from "../controller/user.controller.js"

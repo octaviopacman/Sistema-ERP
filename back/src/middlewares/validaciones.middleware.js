@@ -1,4 +1,4 @@
-const validateSchema = (schema) => (req, res, next) => {
+export const validateSchema = (schema) => (req, res, next) => {
   try {
     schema.parse(req.body);
     next();
@@ -8,4 +8,15 @@ const validateSchema = (schema) => (req, res, next) => {
   }
 };
 
-export default validateSchema;
+/* export const checkPermissions = (requiredPermission) => (req, res, next) => {
+  const userPermissions = req.user.role.permissions;
+
+  if (userPermissions.includes(requiredPermission)) {
+    return next();
+  }
+
+  return res.status(403).json({ message: "Forbidden" });
+}; */
+
+
+
