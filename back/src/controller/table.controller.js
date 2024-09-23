@@ -1,4 +1,4 @@
-import sequelize from "../config/db.js";
+import sequelize from "../config/db";
 
 export const tableCreate = async (req, res) => {
   const {table_title, table_columns} = req.body;

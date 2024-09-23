@@ -24,9 +24,9 @@ export default function Login() {
         p-5 space-y-5 rounded-xl 
         shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]">
           <CardHeader className="flex items-center justify-center">
-            <p className="text-[#172b4d] text-xl">Iniciar Sesión</p>
+            <h2 className="text-[#172b4d]">Iniciar Sesión</h2>
           </CardHeader>
-          <CardBody className="overflow-hidden">
+          <CardBody>
             <form
               onSubmit={submit}
               className="flex flex-col items-center gap-5">
@@ -41,7 +41,6 @@ export default function Login() {
                   type="password"
                   label="Contraseña"
                   placeholder="Ingrese su contraseña"
-
                   {...register(`password`, {required: true})}
                 />
               </div>

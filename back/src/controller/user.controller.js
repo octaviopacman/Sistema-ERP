@@ -75,39 +75,3 @@ export const verifyToken = async (req, res) => {
   });
 };
  */
-
-
-/* export const registerCompany = async (req, res) => {
-  const { companyName, ownerID } = req.body;
-
-  try {
-    const company = await Company.create({ companyName, ownerID });
-    res.status(201).json({ message: "Company created", company });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-}; */
-
-/* export const addEmployee = async (req, res) => {
-  const { userID, companyID, roleID } = req.body;
-
-  try {
-    const employee = await Employee.create({ userID, companyID, roleID });
-    res.status(201).json({ message: "Employee added", employee });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-}; */
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,25 +1,32 @@
-import React from "react";
-import { Input, Autocomplete, AutocompleteItem, Button, Checkbox, Select, table, SelectItem } from "@nextui-org/react";
-import { mysqlDataTypes } from "../helpers/dataTypes";
+import {
+  Input,
+  Autocomplete,
+  Checkbox,
+  AutocompleteItem,
+} from "@nextui-org/react";
 
-function FieldGenerate({ register, count, onDelete, avaibleTablas }) {
+import {mysqlDataTypes} from "../helpers/dataTypes";
+
+function FieldGenerate({register, count}) {
+  count += 1;
+
   return (
-    <div className="flex flex-wrap gap-4 mb-4">
+    <div className="flex">
       <div>
         <Input
-          id={`field-name-${count}`}
+          id={count}
           label="Nombre"
           placeholder="Nombre..."
-          {...register(`fields[${count}].name`)}
+          {...register(`${count}name`)}
         />
       </div>
       <div>
         <Autocomplete
-          id={`field-type-${count}`}
+          id={count}
           defaultItems={mysqlDataTypes}
           label="Tipo de dato"
           placeholder="Integer"
-          {...register(`fields[${count}].dataType`)}>
+          {...register(`${count}dataType`)}>
           {(datatype) => (
             <AutocompleteItem key={datatype.value}>
               {datatype.label}
@@ -28,62 +35,35 @@ function FieldGenerate({ register, count, onDelete, avaibleTablas }) {
         </Autocomplete>
       </div>
       <div>
-        <Select
-        id={`field-nested-table-${count}`}
-        label="Anidar en otra tabla"
-        placeholder="Selecciona Una Tabla"
-        {...register(`fields[${count}].nestedTable`)}
-        >
-          {avaibleTablas.map((table) => (
-            <SelectItem key={table.id} value={table.name}>
-              {table.name}
-            </SelectItem>
-          ))}
-        </Select>
-      </div>
-      <div>
         <Input
           type="Number"
           label="Cantidad"
-          id={`field-length-${count}`}
+          id={count}
           placeholder="Ingrese la longitud"
-          {...register(`fields[${count}].length`)}
+          {...register(`${count}length`)}
         />
       </div>
       <div className="flex gap-5 ml-4">
         <div className="flex flex-col items-center gap-2">
-          <label className="h-fit">Auto Increment</label>
+          <label className="h-fit"> Auto Increment</label>
           <Checkbox
             className="h-fit"
-            id={`field-autoincrement-${count}`}
-            {...register(`fields[${count}].autoIncrement`)}
-          />
+            id={count}
+            {...register(`${count}AutoIncrement`)}></Checkbox>
         </div>
         <div className="flex flex-col items-center gap-2">
-          <label className="h-fit">Primary key</label>
+          <label className="h-fit"> Primary key</label>
           <Checkbox
             className="h-fit"
-            id={`field-primarykey-${count}`}
-            {...register(`fields[${count}].primaryKey`)}
-          />
+            id={count}
+            {...register(`${count}PrimaryKey`)}></Checkbox>
         </div>
         <div className="flex flex-col items-center gap-2">
-          <label className="h-fit">Not Null</label>
+          <label className="h-fit"> Not Null</label>
           <Checkbox
             className="h-fit"
-            id={`field-notnull-${count}`}
-            {...register(`fields[${count}].notNull`)}
-          />
-        </div>
-        <div className="flex">
-          <Button 
-            size="sm"
-            className="text-red-500"
-            variant="primary"
-            onClick={() => onDelete(count)} // Asegúrate de que onDelete esté definido
-          >
-            Eliminar Campo
-          </Button>
+            id={count}
+            {...register(`${count}NotNull`)}></Checkbox>
         </div>
       </div>
     </div>
