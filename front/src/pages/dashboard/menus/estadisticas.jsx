@@ -1,6 +1,8 @@
 import DoughnutChart from '../../../assets/menus/graficos/doghnut.jsx';
-import BarChart from '../../../assets/menus/graficos/bar.jsx';
+import NumeroVentas from '../../../assets/menus/graficos/numerosVentas.jsx';
 import { Card } from '@nextui-org/react';
+import LineChart from '../../../assets/menus/graficos/LineChart.jsx';
+import ClientesTotal from '../../../assets/menus/clientes.jsx';
 export default function Estadisticas() {
     return (
         <div>
@@ -12,7 +14,13 @@ export default function Estadisticas() {
                 <DoughnutChart /> 
             </Card>
             <Card>
-                <BarChart />  
+                <LineChart />  
+            </Card>
+            <Card>
+                <NumeroVentas />  
+            </Card>
+            <Card>
+                <ClientesTotal />  
             </Card>
             
 
