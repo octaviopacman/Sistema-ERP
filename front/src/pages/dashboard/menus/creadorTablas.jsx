@@ -70,10 +70,21 @@ export default function CrearTablas() {
   };
 
   const dataStructure = (data) => {
-    console.log(data);
+    const datos=[]
+    let count=0
+    campos.map((campo)=>{
+        data.fields.map((dato)=>{
+          if(count === campo.id){
+            datos.push(dato)
+
+          }
+          count++
+        })
+        count=0
+    })  
     const datosEstructurados = {
       table_title: data.title,
-      table_columns: data.fields,
+      table_columns: datos,
     };
 
     campos.forEach((valor, i) => {
@@ -106,13 +117,16 @@ export default function CrearTablas() {
   };
 
   const handleEliminarCampo = (id) => {
-    setCampos((prevCampos) => prevCampos.filter((campo) => campo.id !== id));
+
+    const camposFiltrados=campos.filter((campo)=>campo.id != id)
+    setCampos(camposFiltrados)
+    /* setCampos((prevCampos) =>  prevCampos.filter((campo) => campo.id !== id)); */
   };
 
   const submit = handleSubmit(async (data) => {
     if (!messageError) {
       const preparedData = dataStructure(data);
-      console.log('Datos enviados:', preparedData);
+      console.log('Datos enviados:', preparedData); 
       try {
         const response = await fetch('thiago mandale dale', {
           method: 'POST',
