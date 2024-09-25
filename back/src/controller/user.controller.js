@@ -1,14 +1,16 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
-import {config} from "dotenv";
+import Company from "../models/companies.model.js";
+import Employee from "../models/employee.model.js";
+import { config } from "dotenv";
 config();
 const salt = Number(process.env.SALT);
 
 export const registerUser = async (req, res, next) => {
   try {
-    const {username, email, password} = req.body;
-    const userFound = await User.findOne({where: {email}});
+    const { username, email, password } = req.body;
+    const userFound = await User.findOne({ where: { email } });
     if (userFound) {
       return res.status(400).json(["User already exists"]);
     }
@@ -27,8 +29,8 @@ export const registerUser = async (req, res, next) => {
 
 export const loginUser = async (req, res, next) => {
   try {
-    const {email, password: passwordSended} = req.body;
-    const userFound = await User.findOne({where: {email}});
+    const { email, password: passwordSended } = req.body;
+    const userFound = await User.findOne({ where: { email } });
     if (!userFound) {
       return res.status(401).json(["User not found"]);
     }
@@ -36,7 +38,7 @@ export const loginUser = async (req, res, next) => {
     if (!isMatch) {
       return res.status(404).json(["Incorrect password"]);
     }
-    const {password, ...user} = userFound._previousDataValues;
+    const { password, ...user } = userFound._previousDataValues;
 
     const token = jwt.sign(user, process.env.SECRET_KEY, {});
     const cookieOption = {
@@ -52,7 +54,7 @@ export const loginUser = async (req, res, next) => {
 };
 export const logoutUser = (req, res) => {
   res.clearCookie("token");
-  res.json({message: "Logged out successfully"});
+  res.json({ message: "Logged out successfully" });
 };
 export const profileUser = (req, res) => {
   const user = req.user;
@@ -61,7 +63,7 @@ export const profileUser = (req, res) => {
   }
   res.json(user);
 };
-/* 
+/*
 export const verifyToken = async (req, res) => {
   const {token} = req.cookies;
   if (!token) return res.status(401).json(["Unauthorized"]);
@@ -76,8 +78,7 @@ export const verifyToken = async (req, res) => {
 };
  */
 
-
-/* export const registerCompany = async (req, res) => {
+export const registerCompany = async (req, res) => {
   const { companyName, ownerID } = req.body;
 
   try {
@@ -86,9 +87,9 @@ export const verifyToken = async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
-}; */
+};
 
-/* export const addEmployee = async (req, res) => {
+export const addEmployee = async (req, res) => {
   const { userID, companyID, roleID } = req.body;
 
   try {
@@ -97,7 +98,7 @@ export const verifyToken = async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
-}; */
+};
 
 
 
