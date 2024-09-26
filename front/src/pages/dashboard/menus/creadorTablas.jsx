@@ -11,12 +11,12 @@ import {
 import React, { useEffect, useState } from "react";
 import FieldGenerate from "../../../components/FieldGenerate";
 import { useForm } from "react-hook-form";
-import TableManager from "../../../components/TableManager";
-
+/* import TableManager from "../../../components/TableManager";
+ */
 export default function CrearTablas() {
   const { handleSubmit, register } = useForm();
-  const [idField, setIdField] = useState(null);
-  const [isDeleting, setIsDeleting] = useState(false);
+  /* const [idField, setIdField] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false); */
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [messageError, setMessageError] = useState("");
   const [avaibleTablas, setAvaibleTablas] = useState([]);
@@ -26,7 +26,7 @@ export default function CrearTablas() {
 
   
 
-  const datosEnviar = (data) => {
+/*   const datosEnviar = (data) => {
     return {
       tableTitle: data.title,
       fields: data.fields.map((field) => ({
@@ -40,7 +40,7 @@ export default function CrearTablas() {
       })),
     };
   };
-
+ */
   
   
 
