@@ -14,6 +14,7 @@ import Estadisticas from "./pages/dashboard/menus/estadisticas";
 import Actividad from "./pages/dashboard/menus/actividad";
 import Home from "./pages/home/home";
 import CrearTablas from "./pages/dashboard/menus/creadorTablas";
+import './App.css'
 
 const pageTransition = {
     in: { opacity: 1, x: 0 },
@@ -50,21 +51,7 @@ function App() {
                     </motion.div>
                 }
             />
-            <Route
-                path="/dashboard/actividad"
-                element={
-                    <motion.div
-                        initial="out"
-                        animate="in"
-                        exit="out"
-                        variants={pageTransition}
-                        transition={transition}
-
-                    >
-                        <Actividad />
-                    </motion.div>
-                }
-            />
+            
             <Route
                 path="/dashboard/general"
                 element={
@@ -76,7 +63,7 @@ function App() {
                         transition={transition}
 
                     >
-                        <General />
+                        <Estadisticas />
                     </motion.div>
                 }
             />

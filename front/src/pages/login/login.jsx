@@ -8,6 +8,7 @@ import {
 } from "@nextui-org/react";
 import {Link} from "react-router-dom";
 import {useForm} from "react-hook-form";
+import ThemeSwitcher from "../../components/ThemeSwitcher";
 
 export default function Login() {
   const {handleSubmit, register} = useForm();
@@ -20,12 +21,13 @@ export default function Login() {
     <>
       <div className="flex flex-col flex-nowrap justify-center items-center h-[100vh] w-[100vw]">
         <Card
-          className="w-[20rem] h-[25rem] bg-white
+        
+          className="w-[20rem] h-[25rem]
         p-5 space-y-5 rounded-xl 
         shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]">
           <CardHeader className="flex items-center justify-center">
-            <p className="text-[#172b4d] text-xl">Iniciar Sesión</p>
-          </CardHeader>
+            <p className="text-[#172b4d] text-xl ">Iniciar Sesión</p> <div className=""><ThemeSwitcher></ThemeSwitcher></div>
+          </CardHeader> 
           <CardBody className="overflow-hidden">
             <form
               onSubmit={submit}

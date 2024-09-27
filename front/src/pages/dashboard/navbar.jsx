@@ -18,6 +18,7 @@ import {
 } from "@nextui-org/react";
 import { useLocation } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import ThemeSwitcher from "../../components/ThemeSwitcher";
 
 
 export default function NavBar() {
@@ -39,9 +40,9 @@ export default function NavBar() {
 
       <NavbarContent className=" sm:flex gap-4" justify="center">
         <Tabs className="flex items-center gap-2" size="sm" selectedKey={pathname} aria-label="Tabs">
-          <Tab className="text-gray-500 hover:text-gray-800" id="/dashboard" href="/dashboard" >Dashboard <i className="bi bi-x"></i></Tab>
-          <Tab className="text-gray-500 hover:text-gray-800" id="/dashboard/actividad" href="/dashboard/actividad">Actividad <i className="bi bi-x"></i></Tab>
-          <Tab className="text-gray-500 hover:text-gray-800" id="/dashboard/estadisticas" href="/dashboard/estadisticas">Estadísticas <i className="bi bi-x"></i></Tab>
+          <Tab className="text-gray-500 hover:text-gray-800" id="/dashboard" href="/dashboard/general" >Dashboard <i className="bi bi-x"></i></Tab>
+          {/* <Tab className="text-gray-500 hover:text-gray-800" id="/dashboard/actividad" href="/dashboard/actividad">Actividad <i className="bi bi-x"></i></Tab> */}
+          {/* <Tab className="text-gray-500 hover:text-gray-800" id="/dashboard/estadisticas" href="/dashboard/estadisticas">Estadísticas <i className="bi bi-x"></i></Tab> */}
           <Tab className="text-gray-500 hover:text-gray-800" id="/dashboard/creador" href="/dashboard/creador">Creador <i className="bi bi-x"></i></Tab>
         </Tabs>
 
@@ -75,6 +76,9 @@ export default function NavBar() {
           <NavbarItem><a href="/dashboard/estadisticas"><i className="bi bi-bar-chart"></i> Estadísticas </a></NavbarItem>
           <NavbarItem><a href="/dashboard/creador"> <i className="bi bi-bar-chart"></i> Creador </a></NavbarItem>
         </NavbarMenu>
+        <NavbarItem>
+          <ThemeSwitcher></ThemeSwitcher>
+        </NavbarItem>
       </NavbarContent>
 
     </Navbar>

@@ -1,0 +1,20 @@
+.presentacion{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: large;
+    backdrop-filter: blur(1);
+    height: 50vh;
+    padding: 100px;
+    
+}
+
+.presentacion > div {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.titulo {
+    font-size: xx-large;
+    font-weight: bolder;
+}

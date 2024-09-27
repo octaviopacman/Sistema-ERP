@@ -1,0 +1,22 @@
+.theme-icon {
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  }
+  
+  .theme-icon:hover {
+    transform: rotate(180deg);
+  }
+  
+  .theme-icon i {
+    opacity: 0;
+    animation: fade-in 0.5s forwards;
+  }
+  
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
