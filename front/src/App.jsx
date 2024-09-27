@@ -10,11 +10,11 @@ import {
     Route
 } from "react-router-dom"
 import General from "./pages/dashboard/menus/general";
-import Estadisticas from "./pages/dashboard/menus/estadisticas";
 import Actividad from "./pages/dashboard/menus/actividad";
 import Home from "./pages/home/home";
 import CrearTablas from "./pages/dashboard/menus/creadorTablas";
 import './App.css'
+import Estadisticas from "./pages/dashboard/menus/estadisticas";
 
 const pageTransition = {
     in: { opacity: 1, x: 0 },
@@ -53,7 +53,7 @@ function App() {
             />
             
             <Route
-                path="/dashboard/general"
+                path="/dashboard/"
                 element={
                     <motion.div
                         initial="out"

@@ -7,6 +7,8 @@ import {
   ModalHeader,
   ModalFooter,
   ModalBody,
+  SelectItem,
+  Select,
 } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import FieldGenerate from "../../../components/FieldGenerate";
@@ -204,8 +206,25 @@ export default function CrearTablas() {
             </div>
           ))}
         </div>
-        <div className="text-center flex flex-row gap-3 justify-center w-full">
-          <Button onPress={onOpen}>Crear Tabla</Button>
+         <Select
+         className="mb-2 w-[50%]"
+        label="Nivel de visibilidad"
+        placeholder="Para"
+        {...register(`visibilidad`, { required: true})}
+        >
+            <SelectItem  value="owner">
+              Solo Owners
+            </SelectItem>
+            <SelectItem  value="admin">
+              Admin
+            </SelectItem>
+            <SelectItem  value="users">
+              Todos
+            </SelectItem>
+          
+        </Select>
+        <div className="text-center flex flex-row gap-3 justify-end w-full">
+          <Button onPress={onOpen} color="primary">Crear Tabla</Button>
           <Modal
             isOpen={isOpen}
             onOpenChange={onOpenChange}

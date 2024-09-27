@@ -14,13 +14,15 @@ import {
 } from "@nextui-org/react";
 import ThemeSwitcher from "../../components/ThemeSwitcher";
 import './home.css';
+import { NavHome } from "../../components/Navbars/NavHome";
+import FooterHome from "../../components/Footers/FooterHome";
 
 
 
 export default function Home() {
   return (
     <div>
-      <Header></Header>
+      <NavHome/>
       <div className="m-5">
         <div className="p-6 m-auto text-center presentacion">
           
@@ -35,8 +37,8 @@ export default function Home() {
           <CardHeader className="justify-center">Todo lo que estás buscando para tu negocio</CardHeader>
           <CardBody className="p-5 columns-2">
             <div style={{ width: '100px', height: '100px' }}>
-              {/* Aquí puedes agregar una imagen relevante */}
-              <img src="#" className="w-full h-full" />
+             {/* Aquí puedes agregar una imagen relevante
+              <img src="#" className="w-full h-full" /> */}
             </div>
             <div>
               <h3 className="text-lg font-semibold">¿Qué ofrecemos?</h3>
@@ -105,7 +107,7 @@ export default function Home() {
           </section>
 
       </div>
-      <Footer></Footer>
+      <FooterHome/>
     </div>
 
   )
@@ -114,58 +116,7 @@ export default function Home() {
 
 
 
-function Header() {
-  return (
-    <Navbar isBordered>
-      <NavbarBrand>
-
-        <p className="font-bold text-inherit">Sistema ERP</p>
-      </NavbarBrand>
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Caracteristicas
-          </Link>
-        </NavbarItem>
-        <NavbarItem isActive>
-          <Link href="#" aria-current="page">
-            Acerca de nosotros
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Integraciones
-          </Link>
-        </NavbarItem>
-      </NavbarContent>
-      <NavbarContent justify="end">
-        <NavbarItem>
-          <Button as={Link} color="primary" href="/login" variant="ghost">
-            Iniciar Sesión
-          </Button>
-        </NavbarItem>
-        <NavbarItem className="hidden sm:flex">
-          <ThemeSwitcher></ThemeSwitcher>
-        </NavbarItem>
-      </NavbarContent>
-    </Navbar>
 
 
 
-  );
-}
 
-function Footer() {
-  return (
-    <footer className="bg-gray-800 text-gray-400 py-6">
-      <div className="container mx-auto text-center">
-        <p className="text-sm">&copy; 2024 Sistema ERP. Todos los derechos reservados.</p>
-        <div className="flex justify-center mt-4 space-x-6">
-          <a href="#" className="hover:text-white">Términos</a>
-          <a href="#" className="hover:text-white">Privacidad</a>
-          <a href="#" className="hover:text-white">Contacto</a>
-        </div>
-      </div>
-    </footer>
-  );
-}

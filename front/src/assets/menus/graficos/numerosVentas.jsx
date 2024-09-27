@@ -62,7 +62,7 @@ export default function NumeroVentas() {
         <>
             <div>
                 <Card>
-                    <p>Numeros de ventas por mes</p>
+                    {/* <p>Numeros de ventas por mes</p> */}
                     <Line data={data} options={options} />
                 </Card>
             </div>
