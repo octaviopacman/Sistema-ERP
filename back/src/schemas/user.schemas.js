@@ -1,39 +1,39 @@
 import {z} from "zod";
 
 export const registerSchema = z.object({
-  username: z
-    .string({
-      required_error: "Username is required",
-    })
-    .min(3, {
-      message: "Username must be at least 3 characters long",
-    })
-    .max(20, {
-      message: "Username must not exceed 20 characters",
-    }),
+  firstName: z.string({
+    required_error: "El nombre es necesario",
+  }),
+  lastName: z.string({
+    required_error: "El apellido es necesario",
+  }),
   email: z
     .string({
-      required_error: "Email is required",
+      required_error: "El email es necesario",
     })
     .email({
-      required_error: "Email is not valid",
+      required_error: "Email inválido",
     }),
   password: z
     .string({
-      required_error: "Password is required",
+      required_error: "La contraseña es necesaria",
     })
     .min(8, {
-      message: "Password must be at least 8 characters long",
+      message: "La contraseña debe tener un minimo de 8 caracteres",
     })
     .max(50, {
-      message: "Password must not exceed 50 characters",
+      message: "La contraseña no puede exceder los 50 caracteres",
     }),
 });
 export const loginSchema = z.object({
-  username: z.string({
-    required_error: "Username is required",
-  }),
+  email: z
+    .string({
+      required_error: "El email es necesario",
+    })
+    .email({
+      required_error: "Email inválido",
+    }),
   password: z.string({
-    required_error: "Password is required",
+    required_error: "La contraseña es necesaria",
   }),
 });

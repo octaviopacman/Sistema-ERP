@@ -3,21 +3,23 @@ import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
 import Company from "../models/companies.model.js";
 import Employee from "../models/employee.model.js";
-import { config } from "dotenv";
+import {config} from "dotenv";
 config();
 const salt = Number(process.env.SALT);
 
 export const registerUser = async (req, res, next) => {
   try {
-    const { username, email, password } = req.body;
-    const userFound = await User.findOne({ where: { email } });
+    const {firstName, lastName, email, password, role} = req.body;
+    const userFound = await User.findOne({where: {email}});
     if (userFound) {
-      return res.status(400).json(["User already exists"]);
+      return res.status(400).json(["El usuario ya existe"]);
     }
     const hashedPassword = await bcrypt.hash(password, salt);
     const newUser = await User.create({
-      username,
+      firstName,
+      lastName,
       email,
+      role,
       password: hashedPassword,
     });
     const userSaved = await newUser.save();
@@ -29,16 +31,15 @@ export const registerUser = async (req, res, next) => {
 
 export const loginUser = async (req, res, next) => {
   try {
-    const { email, password: passwordSended } = req.body;
-    const userFound = await User.findOne({ where: { email } });
-    if (!userFound) {
-      return res.status(401).json(["User not found"]);
-    }
+    const {email, password: passwordSended} = req.body;
+    const userFound = await User.findOne({where: {email}});
     const isMatch = bcrypt.compareSync(passwordSended, userFound.password);
-    if (!isMatch) {
-      return res.status(404).json(["Incorrect password"]);
+    if (!userFound || !isMatch) {
+      return res
+        .status(401)
+        .json(["La contraseña o el usuario son incorrectos"]);
     }
-    const { password, ...user } = userFound._previousDataValues;
+    const {password, ...user} = userFound._previousDataValues;
 
     const token = jwt.sign(user, process.env.SECRET_KEY, {});
     const cookieOption = {
@@ -54,7 +55,7 @@ export const loginUser = async (req, res, next) => {
 };
 export const logoutUser = (req, res) => {
   res.clearCookie("token");
-  res.json({ message: "Logged out successfully" });
+  res.json({message: "Logged out successfully"});
 };
 export const profileUser = (req, res) => {
   const user = req.user;
@@ -63,7 +64,7 @@ export const profileUser = (req, res) => {
   }
   res.json(user);
 };
-/*
+
 export const verifyToken = async (req, res) => {
   const {token} = req.cookies;
   if (!token) return res.status(401).json(["Unauthorized"]);
@@ -76,39 +77,25 @@ export const verifyToken = async (req, res) => {
     return res.json(userFound);
   });
 };
- */
 
 export const registerCompany = async (req, res) => {
-  const { companyName, ownerID } = req.body;
+  const {companyName, ownerID} = req.body;
 
   try {
-    const company = await Company.create({ companyName, ownerID });
-    res.status(201).json({ message: "Company created", company });
+    const company = await Company.create({companyName, ownerID});
+    res.status(201).json({message: "Company created", company});
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({error: error.message});
   }
 };
 
 export const addEmployee = async (req, res) => {
-  const { userID, companyID, roleID } = req.body;
+  const {userID, companyID, roleID} = req.body;
 
   try {
-    const employee = await Employee.create({ userID, companyID, roleID });
-    res.status(201).json({ message: "Employee added", employee });
+    const employee = await Employee.create({userID, companyID, roleID});
+    res.status(201).json({message: "Employee added", employee});
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({error: error.message});
   }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
