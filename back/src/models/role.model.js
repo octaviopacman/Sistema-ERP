@@ -1,7 +1,9 @@
 import sequelize from "../config/db.js";
-import { DataTypes } from "sequelize";
+import {DataTypes} from "sequelize";
 
-const Role = sequelize.define('Roles', {
+const Role = sequelize.define(
+  "roles",
+  {
     roleID: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -15,9 +17,10 @@ const Role = sequelize.define('Roles', {
       type: DataTypes.JSON,
       allowNull: false, // Los permisos se almacenan en formato JSON
     },
-  }, {
+  },
+  {
     timestamps: true,
-  });
-  
-  export default Role;
-  
+  }
+);
+
+export default Role;

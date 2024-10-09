@@ -1,34 +1,34 @@
 import {DataTypes} from "sequelize";
 import sequelize from "../config/db.js";
+import User from "./user.model.js";
 
-const User = sequelize.define(
-  "users",
+const TablesUser = sequelize.define(
+  "tables_user",
   {
-    userID: {
+    tablaID: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    firstName: {
+    nombreTabla: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    lastName: {
+    visibilidad: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    },
-    password: {
-      type: DataTypes.STRING,
+    campos: {
+      type: DataTypes.JSONB,
       allowNull: false,
     },
-    role: {
-      type: DataTypes.STRING,
-      defaultValue: "user",
+    creadorID: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: User, // Relación con el modelo USER
+        key: "userID",
+      },
     },
   },
   {
@@ -36,4 +36,4 @@ const User = sequelize.define(
   }
 );
 
-export default User;
+export default TablesUser;

@@ -1,8 +1,10 @@
-import { DataTypes } from 'sequelize';
-import sequelize from '../config/db.js';
-import User from './user.model.js';
+import {DataTypes} from "sequelize";
+import sequelize from "../config/db.js";
+import User from "./user.model.js";
 
-const Company = sequelize.define('Companies', {
+const Company = sequelize.define(
+  "companies",
+  {
     companyID: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -16,13 +18,14 @@ const Company = sequelize.define('Companies', {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: User, 
-        key: 'id',
+        model: User,
+        key: "userID",
       },
     },
-  }, {
+  },
+  {
     timestamps: true,
-  });
-  
-  export default Company;
-  
+  }
+);
+
+export default Company;

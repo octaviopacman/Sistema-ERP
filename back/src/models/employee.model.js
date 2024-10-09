@@ -1,10 +1,12 @@
-import { DataTypes } from 'sequelize';
-import sequelize from '../config/db.js';
-import Company from './companies.model.js';
-import User from './user.model.js';
-import Role from './role.model.js';
+import {DataTypes} from "sequelize";
+import sequelize from "../config/db.js";
+import Company from "./companies.model.js";
+import User from "./user.model.js";
+import Role from "./role.model.js";
 
-const Employee = sequelize.define('Employees', {
+const Employee = sequelize.define(
+  "employees",
+  {
     employeeID: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -15,7 +17,7 @@ const Employee = sequelize.define('Employees', {
       allowNull: false,
       references: {
         model: Company, // Relación con el modelo Company
-        key: 'companyID',
+        key: "companyID",
       },
     },
     userID: {
@@ -23,7 +25,7 @@ const Employee = sequelize.define('Employees', {
       allowNull: false,
       references: {
         model: User, // Relación con el modelo User
-        key: 'id',
+        key: "userID",
       },
     },
     roleID: {
@@ -31,12 +33,13 @@ const Employee = sequelize.define('Employees', {
       allowNull: false,
       references: {
         model: Role, // Relación con el modelo Role
-        key: 'roleID',
+        key: "roleID",
       },
     },
-  }, {
+  },
+  {
     timestamps: true,
-  });
-  
-  export default Employee;
-  
+  }
+);
+
+export default Employee;

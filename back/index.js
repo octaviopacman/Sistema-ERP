@@ -5,9 +5,7 @@ import cookieParser from "cookie-parser";
 import router from "./src/routes/user.routes.js";
 import routerTables from "./src/routes/table.routes.js";
 // import routerCompany from "./src/routes/company.routes.js";
-import { syncModels } from './src/models/initModels.js'; // Importar la sincronización de los modelos
-
-
+import {syncModels} from "./src/models/initModels.js"; // Importar la sincronización de los modelos
 
 const app = express();
 
@@ -27,12 +25,13 @@ app.use("/api/tables", routerTables);
 /* app.use('/api/company', routerCompany); */
 
 // Sincronizar los modelos después de inicializar la aplicación
-syncModels().then(() => {
-  console.log('Tablas sincronizadas correctamente');
-}).catch((err) => {
-  console.error('Error al sincronizar las tablas:', err);
-});
-
+syncModels()
+  .then(() => {
+    console.log("Tablas sincronizadas correctamente");
+  })
+  .catch((err) => {
+    console.error("Error al sincronizar las tablas:", err);
+  });
 
 //para que devuelva el error si es que hay alguno
 app.use((error, req, res, next) => {
@@ -40,6 +39,5 @@ app.use((error, req, res, next) => {
     message: error.message,
   });
 });
-
 
 app.listen(8000);
