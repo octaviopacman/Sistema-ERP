@@ -40,6 +40,24 @@ export const tableCreate = async (req, res) => {
     return res.status(500).json({error: e});
   }
 };
+
+export const getAllTables = async (req, res) => {
+  try {
+    const allTables = await TablesUser.findAll();
+    for (let i = 0; i < allTables.length; i++) {
+      const {campos, ...DatosTabla} = allTables[i].dataValues;
+      const camposTabla = {
+        campos: JSON.parse(campos),
+      };
+      const tabla = {...DatosTabla, ...camposTabla};
+      allTables[i] = tabla;
+    }
+    res.status(200).json(allTables);
+  } catch (e) {
+    return res.status(500).json({error: e});
+  }
+};
+
 export const getTablesByUserID = async (req, res) => {
   try {
     const {userID} = req.params;
