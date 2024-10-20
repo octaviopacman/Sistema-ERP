@@ -44,6 +44,7 @@ export default function NavBarDashboard() {
           {/* <Tab className="text-gray-500 hover:text-gray-800" id="/dashboard/actividad" href="/dashboard/actividad">Actividad <i className="bi bi-x"></i></Tab> */}
           {/* <Tab className="text-gray-500 hover:text-gray-800" id="/dashboard/estadisticas" href="/dashboard/estadisticas">Estadísticas <i className="bi bi-x"></i></Tab> */}
           <Tab className="text-gray-500 hover:text-gray-800" id="/dashboard/creador" href="/dashboard/creador">Creador <i className="bi bi-x"></i></Tab>
+          <Tab className="text-gray-500 hover:text-gray-800" id="/dashboard/creador" href="/dashboard/inspector">Inspector <i className="bi bi-x"></i></Tab>
         </Tabs>
 
       </NavbarContent>
