@@ -7,33 +7,33 @@ import Role from "./role.model.js";
 const Employee = sequelize.define(
   "employees",
   {
-    employeeID: {
+    employee_id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    companyID: {
+    company_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: Company, // Relación con el modelo Company
-        key: "companyID",
+        key: "company_id",
       },
     },
-    userID: {
+    user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: User, // Relación con el modelo User
-        key: "userID",
+        key: "user_id",
       },
     },
-    roleID: {
+    role_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: Role, // Relación con el modelo Role
-        key: "roleID",
+        key: "role_id",
       },
     },
   },

@@ -5,21 +5,21 @@ import User from "./user.model.js";
 const Company = sequelize.define(
   "companies",
   {
-    companyID: {
+    company_id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    companyName: {
+    companyname: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    ownerID: {
+    owner_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: User,
-        key: "userID",
+        key: "user_id",
       },
     },
   },

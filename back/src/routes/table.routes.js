@@ -10,7 +10,8 @@ const routerTables = express.Router();
 
 routerTables.get("/", /* revisarCookie, */ getAllTables);
 routerTables.get("/getOne", /* revisarCookie, */ getTablesByTableName);
-routerTables.get("/:userID", /* revisarCookie, */ getTablesByUserID);
-routerTables.post("/createTables/:userID", /* revisarCookie, */ tableCreate);
+routerTables.get("/:user_id/:rol", /* revisarCookie, */ getTablesByUserID);
+routerTables.post("/createTables/:user_id", /* revisarCookie, */ tableCreate);
+routerTables.post("/insert/");
 
 export default routerTables;

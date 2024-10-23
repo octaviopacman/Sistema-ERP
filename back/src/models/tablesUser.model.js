@@ -5,29 +5,29 @@ import User from "./user.model.js";
 const TablesUser = sequelize.define(
   "tables_user",
   {
-    tablaID: {
+    tabla_id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    nombreTabla: {
+    nombre_tabla: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     visibilidad: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     campos: {
       type: DataTypes.JSONB,
       allowNull: false,
     },
-    creadorID: {
+    creador_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: User, // Relación con el modelo USER
-        key: "userID",
+        key: "user_id",
       },
     },
   },

@@ -5,23 +5,23 @@ import Role from "./role.model.js";
 import TablesUser from "./tablesUser.model.js";
 
 // Defino las relaciones
-User.hasMany(Company, {foreignKey: "ownerID"});
-Company.belongsTo(User, {foreignKey: "ownerID"});
+User.hasMany(Company, {foreignKey: "owner_id"});
+Company.belongsTo(User, {foreignKey: "owner_id"});
 
-Company.hasMany(Employee, {foreignKey: "companyID"});
-Employee.belongsTo(Company, {foreignKey: "companyID"});
+Company.hasMany(Employee, {foreignKey: "company_id"});
+Employee.belongsTo(Company, {foreignKey: "company_id"});
 
-User.hasOne(Employee, {foreignKey: "userID"});
-Employee.belongsTo(User, {foreignKey: "userID"});
+User.hasOne(Employee, {foreignKey: "user_id"});
+Employee.belongsTo(User, {foreignKey: "user_id"});
 
-Role.hasMany(Employee, {foreignKey: "roleID"});
-Employee.belongsTo(Role, {foreignKey: "roleID"});
+Role.hasMany(Employee, {foreignKey: "role_id"});
+Employee.belongsTo(Role, {foreignKey: "role_id"});
 
-Role.hasMany(Employee, {foreignKey: "roleID"});
-Employee.belongsTo(Role, {foreignKey: "roleID"});
+Role.hasMany(Employee, {foreignKey: "role_id"});
+Employee.belongsTo(Role, {foreignKey: "role_id"});
 
-User.hasMany(TablesUser, {foreignKey: "creadorID"});
-TablesUser.belongsTo(User, {foreignKey: "creadorID"});
+User.hasMany(TablesUser, {foreignKey: "creador_id"});
+TablesUser.belongsTo(User, {foreignKey: "creador_id"});
 
 // Sincroniza los modelos con la base de datos
 export const syncModels = async () => {

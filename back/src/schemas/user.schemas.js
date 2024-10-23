@@ -1,10 +1,10 @@
 import {z} from "zod";
 
 export const registerSchema = z.object({
-  firstName: z.string({
+  firstname: z.string({
     required_error: "El nombre es necesario",
   }),
-  lastName: z.string({
+  lastname: z.string({
     required_error: "El apellido es necesario",
   }),
   email: z

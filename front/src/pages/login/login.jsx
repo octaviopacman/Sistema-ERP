@@ -45,13 +45,14 @@ export default function Login() {
               <form
                 onSubmit={submit}
                 className="flex flex-col items-center gap-5">
-                {loginErrors.map((error, i) => {
-                  return (
-                    <p key={i} className="text-red-500 text-xs">
-                      {error}
-                    </p>
-                  );
-                })}
+                {loginErrors &&
+                  loginErrors.map((error, i) => {
+                    return (
+                      <p key={i} className="text-red-500 text-xs">
+                        {error}
+                      </p>
+                    );
+                  })}
                 <div className="w-[100%] flex flex-col gap-5">
                   <Input
                     type="email"

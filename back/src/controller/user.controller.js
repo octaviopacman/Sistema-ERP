@@ -9,15 +9,15 @@ const salt = Number(process.env.SALT);
 
 export const registerUser = async (req, res, next) => {
   try {
-    const {firstName, lastName, email, password, role} = req.body;
+    const {firstname, lastname, email, password, role} = req.body;
     const userFound = await User.findOne({where: {email}});
     if (userFound) {
       return res.status(400).json(["El usuario ya existe"]);
     }
     const hashedPassword = await bcrypt.hash(password, salt);
     const newUser = await User.create({
-      firstName,
-      lastName,
+      firstname,
+      lastname,
       email,
       role,
       password: hashedPassword,

@@ -12,7 +12,7 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: "http://186.39.56.136:5173",
+    origin: "http://localhost:8000",
   })
 );
 app.use(morgan("dev"));

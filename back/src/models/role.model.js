@@ -4,12 +4,12 @@ import {DataTypes} from "sequelize";
 const Role = sequelize.define(
   "roles",
   {
-    roleID: {
+    role_id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    roleName: {
+    rolename: {
       type: DataTypes.STRING,
       allowNull: false,
     },
