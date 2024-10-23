@@ -7,6 +7,7 @@ import Actividad from "./pages/dashboard/menus/actividad";
 import Home from "./pages/home/home";
 import CrearTablas from "./pages/dashboard/menus/creadorTablas";
 import Estadisticas from "./pages/dashboard/menus/estadisticas";
+import Inspector from "./pages/dashboard/menus/inspector";
 
 //contextos
 import {AuthProvider} from "./context/AuthContext";
@@ -72,6 +73,19 @@ function App() {
                   variants={pageTransition}
                   transition={transition}>
                   <CrearTablas />
+                </motion.div>
+              }
+            />
+            <Route
+              path="/dashboard/inspector"
+              element={
+                <motion.div
+                  initial="out"
+                  animate="in"
+                  exit="out"
+                  variants={pageTransition}
+                  transition={transition}>
+                  <Inspector />
                 </motion.div>
               }
             />
