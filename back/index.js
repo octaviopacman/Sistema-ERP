@@ -6,6 +6,7 @@ import router from "./src/routes/user.routes.js";
 import routerTables from "./src/routes/table.routes.js";
 // import routerCompany from "./src/routes/company.routes.js";
 import {syncModels} from "./src/models/initModels.js"; // Importar la sincronización de los modelos
+import routerTablePetitions from "./src/routes/tablePetitions.routes.js";
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(express.urlencoded({extended: true}));
 
 app.use("/api", router);
 app.use("/api/tables", routerTables);
+app.use("/api/tablePetitions", routerTablePetitions);
 /* app.use('/api/company', routerCompany); */
 
 // Sincronizar los modelos después de inicializar la aplicación
