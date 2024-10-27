@@ -1,6 +1,6 @@
 import {handleCustomApiRequest} from "../Shared/ClientShared";
 
-const URL = "http://localhost:3000/api";
+const URL = "http://localhost:8000/api";
 
 function registerUser({body}) {
   return handleCustomApiRequest({
@@ -23,5 +23,11 @@ function verifyCookies() {
     withToken: true,
   });
 }
-
-export {registerUser, iniciarSesion, verifyCookies};
+function tablesByUser(user_id, rol) {
+  return handleCustomApiRequest({
+    url: `${URL}/tables/${user_id}/${rol}`,
+    method: "GET",
+    withToken: true,
+  });
+}
+export {registerUser, iniciarSesion, verifyCookies, tablesByUser};
