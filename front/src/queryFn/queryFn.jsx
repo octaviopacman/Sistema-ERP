@@ -1,6 +1,6 @@
 import {handleCustomApiRequest} from "../Shared/ClientShared";
 
-const URL = "http://localhost:8000/api";
+const URL = "http://186.39.104.233:8000/api";
 
 function registerUser({body}) {
   return handleCustomApiRequest({

@@ -7,7 +7,6 @@ import {
   NavbarMenuToggle,
   NavbarMenu,
   NavbarMenuItem,
-  Link,
   Button,
   Tabs,
   Tab,
@@ -16,16 +15,26 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@nextui-org/react";
-import { useLocation } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import ThemeSwitcher from "../../components/ThemeSwitcher";
-
+import { useLocation, Link, useNavigate } from "react-router-dom"; // Para obtener el pathname actual
+import { useTabContext } from "../tabContext";
 
 export default function NavBarDashboard() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const { tabs, addTab, removeTab, hideTab, showTab } = useTabContext();
+  const { pathname } = useLocation();
+  const navigate=useNavigate()
+  console.log(pathname);
+  console.log(tabs);
+  const onclick=(name,path)=>{
+    showTab(name);
+    navigate(path)
 
-  
-  const pathname = useLocation();
+  }
+
+
+
   return (
     <Navbar onMenuOpenChange={setIsMenuOpen}>
       <NavbarContent>
@@ -38,16 +47,42 @@ export default function NavBarDashboard() {
         </NavbarBrand>
       </NavbarContent>
 
-      <NavbarContent className=" sm:flex gap-4" justify="center">
-        <Tabs className="flex items-center gap-2" size="sm" selectedKey={pathname} aria-label="Tabs">
-          <Tab className="text-gray-500 hover:text-gray-800" id="/dashboard" href="/dashboard" >Dashboard <i className="bi bi-x"></i></Tab>
-          {/* <Tab className="text-gray-500 hover:text-gray-800" id="/dashboard/actividad" href="/dashboard/actividad">Actividad <i className="bi bi-x"></i></Tab> */}
-          {/* <Tab className="text-gray-500 hover:text-gray-800" id="/dashboard/estadisticas" href="/dashboard/estadisticas">Estadísticas <i className="bi bi-x"></i></Tab> */}
-          <Tab className="text-gray-500 hover:text-gray-800" id="/dashboard/creador" href="/dashboard/creador">Creador <i className="bi bi-x"></i></Tab>
-          <Tab className="text-gray-500 hover:text-gray-800" id="/dashboard/creador" href="/dashboard/inspector">Inspector <i className="bi bi-x"></i></Tab>
-        </Tabs>
 
-      </NavbarContent>
+      <Tabs size="sm" selectedKey={pathname}>
+        {tabs && tabs.map(
+          (tab, i) =>
+            tab.visible && (
+              <Tab
+              className="pr-[0.3rem]"
+
+                key={tab.path}
+                id={tab.path}
+                title={
+                  <div className="flex row gap-2 items-center">
+
+                    <Link to={tab.path} className="mb-0.5">
+                      {tab.name}
+                    </Link>
+
+                    <i
+                      className="bi bi-x text-lg "
+                      onClick={(e) => {
+                        e.preventDefault();
+                        hideTab(tab.name, i);
+                      }}
+                    ></i>
+                  </div>
+                }
+              >
+
+
+              </Tab>
+            )
+        )}
+      </Tabs>
+
+
+
       <NavbarContent justify="end">
 
 
@@ -72,10 +107,13 @@ export default function NavBarDashboard() {
 
 
         <NavbarMenu className="md:w-1/5">
-          <NavbarItem><a href="/dashboard"><i className="bi bi-house"></i>  Dashboard </a> </NavbarItem>
-          <NavbarItem><a href="/dashboard/actividad"><i className="bi bi-activity"></i>  Actividad </a></NavbarItem>
-          <NavbarItem><a href="/dashboard/estadisticas"><i className="bi bi-bar-chart"></i> Estadísticas </a></NavbarItem>
-          <NavbarItem><a href="/dashboard/creador"> <i className="bi bi-bar-chart"></i> Creador </a></NavbarItem>
+          {tabs && tabs.map((tab) => (
+            <NavbarItem key={tab.path}>
+              <button onClick={() => onclick(tab.name, tab.path)} className="p-2 text-gray-700 hover:text-gray-900">
+                {tab.name}
+              </button>
+            </NavbarItem>
+          ))}
         </NavbarMenu>
         <NavbarItem>
           <ThemeSwitcher></ThemeSwitcher>

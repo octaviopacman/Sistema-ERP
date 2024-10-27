@@ -18,3 +18,7 @@
     font-size: xx-large;
     font-weight: bolder;
 }
+
+h2 {
+    background-color: rgba(0, 0, 0, 0);
+}

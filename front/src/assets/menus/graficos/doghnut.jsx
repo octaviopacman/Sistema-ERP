@@ -3,7 +3,7 @@ import {Doughnut} from 'react-chartjs-2';
 import {Chart as ChartJS} from 'chart.js/auto';
 
 const data = {
-    labels: [ 'Red', 'Green', 'Yellow'],
+    labels: [ 'De Navidad', 'Timberos', 'De grasa'],
     datasets: [
         {
             label: 'GORDOS MUNDIALES',
