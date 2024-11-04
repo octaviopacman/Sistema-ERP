@@ -1,11 +1,25 @@
 import {useEffect, useState} from "react";
 import Sidebar from "../../../components/Sidebar/Sidebar";
 import "./inspector.css";
-import {Button} from "@nextui-org/react";
+import {
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableColumn,
+  TableHeader,
+  TableRow,
+} from "@nextui-org/react";
 import {tablesByUser} from "../../../queryFn/queryFn";
+import {useParams} from "react-router-dom";
+import TableCard from "../../../components/TableCard/TableCard";
 
 export default function Inspector() {
   const [tables, setTables] = useState([]);
+  const [tablaSeleccionada, setTablaSeleccionada] = useState(null);
+
+  const params = useParams();
+
   useEffect(() => {
     const getTables = async () => {
       const res = await tablesByUser(1, "Owner");
@@ -15,40 +29,25 @@ export default function Inspector() {
     };
     getTables();
   }, []);
-  console.log(tables);
+  useEffect(() => {
+    if (params.tablaId) {
+      const tabla = tables.find((t) => t.tabla_id === Number(params.tablaId));
+      setTablaSeleccionada(tabla);
+      console.log(tabla);
+    }
+  }, [params, tables]);
+
   return (
-    <div className="flex row gap-20">
-      <Sidebar tables={tables} />
+    <div className="flex row w-full h-screen gap-10">
+      <Sidebar tables={tables} params={params} />
       {/* Aquí se mostrarán los datos del inspector */}
-      <div className="tabla">
-        <h2>Usuarios</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Apellido</th>
-              <th>Documento</th>
-              <th>Email</th>
-              <th>Teléfono</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Juan</td>
-              <td>Perez</td>
-              <td>123456789</td>
-              <td>juan@example.com</td>
-              <td>1234567890</td>
-              <td>
-                <div className="flex flex-wrap gap-4 items-center m-auto">
-                  <Button color="warning">Editar</Button>
-                  <Button color="danger">Borrar</Button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div className="w-screen flex justify-center mt-40">
+        {!params.tablaId && (
+          <h2>Puede ingresar a una tabla desde la barra lateral</h2>
+        )}
+        {params.tablaId && tablaSeleccionada && (
+          <TableCard tablaSeleccionada={tablaSeleccionada} />
+        )}
       </div>
     </div>
   );

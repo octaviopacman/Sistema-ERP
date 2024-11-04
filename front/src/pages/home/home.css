@@ -1,24 +1,25 @@
-.presentacion{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: large;
-    backdrop-filter: blur(1);
-    height: 50vh;
-    padding: 100px;
-    
+.presentacion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: large;
+  backdrop-filter: blur(1);
+  height: 50vh;
+  padding: 100px;
 }
 
 .presentacion > div {
-    margin-top: auto;
-    margin-bottom: auto;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 .titulo {
-    font-size: xx-large;
-    font-weight: bolder;
+  font-size: xx-large;
+  font-weight: bolder;
 }
-
+/* 
 h2 {
-    background-color: rgba(0, 0, 0, 0);
+  background-color: white;
+  color: black;
 }
+ */

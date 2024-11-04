@@ -1,6 +1,6 @@
 import {handleCustomApiRequest} from "../Shared/ClientShared";
 
-const URL = "http://186.39.104.233:8000/api";
+const URL = "http://localhost:8000/api";
 
 function registerUser({body}) {
   return handleCustomApiRequest({
@@ -30,4 +30,26 @@ function tablesByUser(user_id, rol) {
     withToken: true,
   });
 }
-export {registerUser, iniciarSesion, verifyCookies, tablesByUser};
+function createTables(user_id, body) {
+  return handleCustomApiRequest({
+    url: `${URL}/tables/CreateTables/${user_id}`,
+    method: "POST",
+    body,
+    withToken: true,
+  });
+}
+function getValuesTables(tablename) {
+  return handleCustomApiRequest({
+    url: `${URL}/tablePetitions/${tablename}`,
+    method: "GET",
+    withToken: true,
+  });
+}
+export {
+  registerUser,
+  iniciarSesion,
+  verifyCookies,
+  tablesByUser,
+  createTables,
+  getValuesTables,
+};

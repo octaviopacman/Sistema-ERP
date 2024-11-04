@@ -15,3 +15,13 @@ export const getAllValues = async (req, res) => {
     res.status(404).json([error]);
   }
 };
+
+export const insertInTable = async (req, res) => {
+  try {
+    const {tableName} = req.params;
+    const {data} = req.body;
+    const query = `INSERT INTO ${tableName} VALUES ()`;
+  } catch (e) {
+    res.status(500).json([e]);
+  }
+};

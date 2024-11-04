@@ -10,42 +10,22 @@ import {
   SelectItem,
   Select,
 } from "@nextui-org/react";
-import React, { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import FieldGenerate from "../../../components/FieldGenerate";
-import { useForm } from "react-hook-form";
-/* import TableManager from "../../../components/TableManager";
- */
+import {useForm} from "react-hook-form";
+import {createTables, tablesByUser} from "../../../queryFn/queryFn";
+import {useNavigate} from "react-router-dom";
+
 export default function CrearTablas() {
-  const { handleSubmit, register } = useForm();
-  /* const [idField, setIdField] = useState(null);
-  const [isDeleting, setIsDeleting] = useState(false); */
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const {handleSubmit, register, setValue, getValues} = useForm();
+  const {isOpen, onOpen, onOpenChange} = useDisclosure();
   const [messageError, setMessageError] = useState("");
+  const [messageCreateError, setMessageCreateError] = useState([]);
   const [avaibleTablas, setAvaibleTablas] = useState([]);
-  const [campos, setCampos] = useState([{ id: 0 }]);  
+  const [campos, setCampos] = useState([{id: 0}]);
   const [numCampos, setNumCampos] = useState(1);
-  let cont = 0;
-
-  
-
-/*   const datosEnviar = (data) => {
-    return {
-      tableTitle: data.title,
-      fields: data.fields.map((field) => ({
-        name: field.name,
-        dataType: field.dataType,
-        length: field.length,
-        autoIncrement: field.autoIncrement,
-        primaryKey: field.primaryKey,
-        notNull: field.notNull,
-        nestedTable: field.nestedTable || null,
-      })),
-    };
-  };
- */
-  
-  
-
+  const navigate = useNavigate();
+  const [tables, setTables] = useState([]);
   // Maneja el cambio en el campo de número de campos
   const handleFieldCountChange = (e) => {
     const value = e.target.value;
@@ -62,7 +42,7 @@ export default function CrearTablas() {
       // Agregar nuevos campos
       const newFields = [];
       for (let i = currentFieldsCount; i < newFieldsCount; i++) {
-        newFields.push({ id: i });
+        newFields.push({id: i});
       }
       setCampos((prevCampos) => [...prevCampos, ...newFields]);
     } else if (newFieldsCount < currentFieldsCount) {
@@ -72,122 +52,102 @@ export default function CrearTablas() {
   };
 
   const dataStructure = (data) => {
-    const datos=[]
-    let count=0
-    campos.map((campo)=>{
-        data.fields.map((dato)=>{
-          if(count === campo.id){
-            datos.push(dato)
-
-          }
-          count++
-        })
-        count=0
-    })  
+    const datos = [];
+    let count = 0;
+    campos.map((campo) => {
+      data.fields.map((dato) => {
+        if (count === campo.id) {
+          datos.push(dato);
+        }
+        count++;
+      });
+      count = 0;
+    });
     const datosEstructurados = {
       table_title: data.title,
       table_columns: datos,
+      visibilidad: data.visibilidad,
     };
-
-    campos.forEach((valor, i) => {
-      let newObj = {};
-      for (let prop in data) {
-        if (prop[0] == i) {
-          let str = prop.slice(1);
-          if (str === "PrimaryKey") {
-            if (data[prop]) {
-              cont += 1;
-              if (cont > 1) {
-                setMessageError("Hay más de una primary key");
-              } else {
-                newObj[str] = data[prop];
-              }
-            } else {
-              newObj[str] = data[prop];
+    let cont = 0;
+    datos.forEach((valor) => {
+      for (let prop in valor) {
+        if (prop === "primaryKey") {
+          if (valor[prop]) {
+            cont += 1;
+            if (cont > 1) {
+              setMessageError("Hay más de una primary key");
             }
-          } else {
-            newObj[str] = data[prop];
           }
         }
       }
-      if (Object.keys(newObj).length > 0) {
-        datosEstructurados.table_columns.push(newObj);
-      }
     });
+
+    if (cont > 1) {
+      return messageError;
+    }
     cont = 0;
     return datosEstructurados;
   };
 
   const handleEliminarCampo = (id) => {
-
-    const camposFiltrados=campos.filter((campo)=>campo.id != id)
-    setCampos(camposFiltrados)
+    const camposFiltrados = campos.filter((campo) => campo.id != id);
+    setCampos(camposFiltrados);
     /* setCampos((prevCampos) =>  prevCampos.filter((campo) => campo.id !== id)); */
   };
 
   const submit = handleSubmit(async (data) => {
-    if (!messageError) {
-      const preparedData = dataStructure(data);
-      console.log('Datos enviados:', preparedData); 
-      try {
-        const response = await fetch('thiago mandale dale', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(preparedData),
-        });
-  
-        if (!response.ok) {
-          throw new Error('Error al enviar los datos');
-        }
-  
-        const result = await response.json();
-        console.log('Respuesta del servidor:', result);
-  
-        // Maneja la respuesta del servidor aquí
-  
-      } catch (error) {
-        console.error('Error:', error);
-        // Maneja el error aquí
+    const preparedData = dataStructure(data);
+    console.log("Datos enviados:", preparedData);
+    if (!messageError && preparedData) {
+      const data = {
+        userId: 1,
+        role: "Admin",
+      };
+      const res = await createTables(data.userId, preparedData);
+      console.log(res);
+      if (Array.isArray(res)) {
+        console.log("!dadsa");
+        return setMessageCreateError(res);
       }
+      /*  navigate(0); */
     }
   });
-  
+  useEffect(() => {
+    console.log(messageCreateError);
+  }, [messageCreateError]);
 
   useEffect(() => {
-    const fetchAvaibleTablas = async () => {
+    const tablesByUserId = async () => {
       try {
-        const response = await fetch('THIAGO HACE PARA QUE PUEDA OBTENER LAS TABLAS',{
-          method:'GET',
-          headers: {
-            "Content-Type": "application.json",
-          },
-        });
-        if (!response.ok) {
-          throw new Error('Error al obtener las tablas disponibles')
+        const data = {
+          userId: 1,
+          role: "Owner",
+        };
+        const res = await tablesByUser(data.userId, data.role);
+        if (!res) {
+          return;
         }
-        const tablas = await response.json();
-        setAvaibleTablas(tablas); 
-      } catch {
-        console.error("ERROR AL CARGAR LAS TABLAS DISPONIBLES", error)
+        setTables(res);
+      } catch (e) {
+        console.log(e);
       }
-    }
-  fetchAvaibleTablas();
-},[]);
+    };
+    tablesByUserId();
+  }, []);
+
   return (
     <div className="p-5">
       <form onSubmit={submit}>
         <Input
-        className="mb-2"
+          className="mb-2"
           label="Título de Tabla"
           placeholder="Título..."
           name="title"
-          {...register(`title`, { required: true })}
+          {...register(`title`, {required: true})}
         />
         <div className="p-3 mb-4">
           <Input
-          className="mb-3"
+            className="mb-3"
             type="number"
             label="Número de campos"
             min={1}
@@ -202,34 +162,42 @@ export default function CrearTablas() {
                 count={campo.id}
                 avaibleTablas={avaibleTablas}
                 onDelete={handleEliminarCampo}
+                tables={tables}
+                setValue={setValue}
+                getValues={getValues}
               />
             </div>
           ))}
         </div>
-         <Select
-         className="mb-2 w-[50%]"
-        label="Nivel de visibilidad"
-        placeholder="Para"
-        {...register(`visibilidad`, { required: true})}
-        >
-            <SelectItem  value="owner">
-              Solo Owners
-            </SelectItem>
-            <SelectItem  value="admin">
-              Admin
-            </SelectItem>
-            <SelectItem  value="users">
-              Todos
-            </SelectItem>
-          
+        <Select
+          className="mb-2 w-[50%]"
+          label="Nivel de visibilidad"
+          placeholder="Para"
+          {...register(`visibilidad`, {required: true})}>
+          <SelectItem value="owner" key="Owner">
+            Solo Owners
+          </SelectItem>
+          <SelectItem value="admin" key="Admin">
+            Admin
+          </SelectItem>
+          <SelectItem value="users" key="User">
+            Todos
+          </SelectItem>
         </Select>
         <div className="text-center flex flex-row gap-3 justify-end w-full">
-          <Button onPress={onOpen} color="primary">Crear Tabla</Button>
+          <Button
+            onPress={onOpen}
+            color="primary"
+            onClick={() => {
+              setMessageError("");
+              setMessageCreateError([]);
+            }}>
+            Crear Tabla
+          </Button>
           <Modal
             isOpen={isOpen}
             onOpenChange={onOpenChange}
-            placement="top-center"
-          >
+            placement="top-center">
             <ModalContent>
               {(onClose) => (
                 <>
@@ -237,6 +205,14 @@ export default function CrearTablas() {
                     ¿Estás seguro de crear esta tabla?
                   </ModalHeader>
                   <ModalBody>
+                    {messageCreateError &&
+                      messageCreateError.map((error, i) => {
+                        return (
+                          <p key={i} className="text-red-500 text-xs">
+                            {error}
+                          </p>
+                        );
+                      })}
                     {messageError && (
                       <p className="text-red-500 text-sm">{messageError}</p>
                     )}
@@ -245,11 +221,7 @@ export default function CrearTablas() {
                     <Button color="danger" variant="flat" onPress={onClose}>
                       Volver
                     </Button>
-                    <Button
-                      color="primary"
-                      type="submit"
-                      onClick={submit}
-                    >
+                    <Button color="primary" type="submit" onClick={submit}>
                       Crear
                     </Button>
                   </ModalFooter>
@@ -259,7 +231,6 @@ export default function CrearTablas() {
           </Modal>
         </div>
       </form>
-      
     </div>
   );
 }

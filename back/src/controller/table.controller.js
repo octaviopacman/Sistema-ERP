@@ -9,7 +9,6 @@ import TablesUser from "../models/tablesUser.model.js";
 //4=SOLO  VER
 
 const manejarNiveles = (rol) => {
-  console.log(rol);
   if (rol === "owner" || rol === "Owner") {
     return 1;
   } else if (rol === "admin" || rol === "Admin") {
@@ -31,22 +30,81 @@ export const tableCreate = async (req, res) => {
       where: {nombre_tabla: table_title},
     });
     if (tableExists) return res.status(400).json(["La tabla ya existe"]);
+    /*  let foreign = "";
+    let query = "";
+    let campos = [];
 
-    const query = `CREATE TABLE IF NOT EXISTS ${table_title} (${table_columns.map(
-      (column) => {
-        if (column.AutoIncrement) {
-          return `${column.name} SERIAL ${column.NotNull ? "NOT NULL " : ""} 
-          ${column.PrimaryKey ? "PRIMARY KEY " : ""}`;
-        } else {
-          return `${column.name} ${column.dataType} ${
-            column.NotNull ? "NOT NULL " : ""
-          } ${column.PrimaryKey ? "PRIMARY KEY " : ""}
-              `;
+    table_columns.map((column) => {
+      if (column.autoIncrement) {
+        query = `${column.name} SERIAL ${column.notNull ? "NOT NULL " : ""} 
+          ${column.primaryKey ? "PRIMARY KEY " : ""}`;
+        if (query) {
+          campos.push(query);
+        }
+      } else {
+        if (column.foreignkey) {
+          foreign = `${column.nameForeign} ${column.foreignKeyType}`;
+        }
+
+        query = ` ${column.name} ${column.dataType} ${
+          column.notNull ? " NOT NULL" : ""
+        } ${column.primaryKey ? "PRIMARY KEY" : ""} ${
+          column.foreignkey
+            ? `${foreign}, FOREIGN KEY (${column.nameForeign}) REFERENCES ${column.tableForeign}(${column.nameForeign})`
+            : ""
+        }`;
+        console.log(query);
+        if (query) {
+          campos.push(query);
         }
       }
-    )})`;
+    });
 
-    const tablaNueva = await sequelize.query(query);
+    console.log(campos);
+
+    const queryCompleta = `CREATE TABLE IF NOT EXISTS ${table_title} (${campos.map(
+      (campo, i) => campo
+    )})`;
+    console.log(` bbbbb dddd ${queryCompleta}`); */
+    let foreign = "";
+    let query = "";
+    let campos = [];
+    let foreignKeys = [];
+
+    table_columns.forEach((column) => {
+      let query = "";
+
+      if (column.autoIncrement) {
+        // Campo con autoincremento
+        query = `${column.name} SERIAL ${column.notNull ? "NOT NULL" : ""} ${
+          column.primaryKey ? "PRIMARY KEY" : ""
+        }`.trim();
+        if (query) campos.push(query);
+      } else {
+        // Campo normal
+        query = `${column.name} ${column.dataType} ${
+          column.notNull ? "NOT NULL" : ""
+        } ${column.primaryKey ? "PRIMARY KEY" : ""}`.trim();
+        if (query) campos.push(query);
+      }
+
+      // Si hay clave foránea, se agrega a la lista de claves foráneas
+      if (column.foreignkey) {
+        const foreignKey = `${column.nameForeign} ${column.foreignKeyType}, FOREIGN KEY (${column.nameForeign}) REFERENCES ${column.tableForeign}(${column.nameForeign})`;
+        foreignKeys.push(foreignKey);
+      }
+    });
+
+    // Combinar todos los campos y luego las claves foráneas
+    const allFields = [...campos, ...foreignKeys];
+
+    // Generar la query completa
+    const queryCompleta = `CREATE TABLE IF NOT EXISTS ${table_title} (${allFields.join(
+      ", "
+    )})`;
+    console.log(`Query Final: ${queryCompleta}`);
+
+    const tablaNueva = await sequelize.query(queryCompleta);
     if (!tablaNueva) res.status(404).json(["No se pudo crear la tabla"]);
 
     const colsJSON = JSON.stringify(table_columns);
@@ -62,7 +120,8 @@ export const tableCreate = async (req, res) => {
 
     res.status(201).json(tabla);
   } catch (e) {
-    return res.status(500).json({error: e});
+    console.log(e);
+    return res.status(500).json([e.sql]);
   }
 };
 
@@ -87,11 +146,11 @@ export const getTablesByUserID = async (req, res) => {
   try {
     const {user_id, rol} = req.params;
     const visibilidad = Number(manejarNiveles(rol));
-    console.log(visibilidad);
 
     const tablaByUser = await TablesUser.findAll({
       where: {creador_id: user_id, visibilidad: {[Op.gte]: visibilidad}},
     });
+    if (tablaByUser.length === 0) return res.status(400).json([]);
 
     for (let i = 0; i < tablaByUser.length; i++) {
       const {campos, ...DatosTabla} = tablaByUser[i].dataValues;

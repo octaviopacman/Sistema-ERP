@@ -1,27 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { Input, Button, Table, Modal, useDisclosure } from "@nextui-org/react";
+import React, {useEffect, useState} from "react";
+import {Input, Button, Table, Modal, useDisclosure} from "@nextui-org/react";
 
 export default function TableManager() {
   const [tablas, setTablas] = useState([]);
   const [seleccionarTabla, setSeleccionarTabla] = useState(null);
-  const [nuevoCampo, setNuevoCampo] = useState('');
-  const [editarCampo, setEditarCampo] = useState('');
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const { isOpen: isEditOpen, onOpen: onEditOpen, onOpenChange: onEditClose } = useDisclosure();
+  const [nuevoCampo, setNuevoCampo] = useState("");
+  const [editarCampo, setEditarCampo] = useState("");
+  const {isOpen, onOpen, onOpenChange} = useDisclosure();
+  const {
+    isOpen: isEditOpen,
+    onOpen: onEditOpen,
+    onOpenChange: onEditClose,
+  } = useDisclosure();
 
   useEffect(() => {
     const fetchTablas = async () => {
       try {
-        const response = await fetch('THIAGO HACE LA API PARA OBTENER TABLAS', {
-          method: 'GET',
+        const response = await fetch("THIAGO HACE LA API PARA OBTENER TABLAS", {
+          method: "GET",
         });
         if (!response.ok) {
-          throw new Error('ERROR AL OBTENER LAS TABLAS');
+          throw new Error("ERROR AL OBTENER LAS TABLAS");
         }
         const data = await response.json();
         setTablas(data);
       } catch (error) {
-        console.error('ERROR:', error);
+        console.error("ERROR:", error);
       }
     };
     fetchTablas();
@@ -29,69 +33,35 @@ export default function TableManager() {
 
   const eliminarTabla = async (id) => {
     try {
-      const response = await fetch(`THIAGO HACE LA API PARA ELIMINAR LAS TABLAS/${id}`, {
-        method: 'DELETE',
-      });
+      const response = await fetch(
+        `THIAGO HACE LA API PARA ELIMINAR LAS TABLAS/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
       if (!response.ok) {
-        throw new Error('ERROR AL ELIMINAR LAS TABLAS');
+        throw new Error("ERROR AL ELIMINAR LAS TABLAS");
       }
       setTablas(tablas.filter((tabla) => tabla.id !== id));
     } catch (error) {
-      console.error('Error', error);
+      console.error("Error", error);
     }
   };
 
   const agregarCampo = async () => {
     try {
-      const response = await fetch(`THIAGO HACE LA API PARA AGREGAR CAMPO/${seleccionarTabla.id}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ field: nuevoCampo }),
-      });
-      if (!response.ok) {
-        throw new Error('ERROR AL AGREGAR UN CAMPO');
-      }
-      const actualizarTabla = await response.json();
-      setTablas(
-        tablas.map((tabla) => (tabla.id === seleccionarTabla.id ? actualizarTabla : tabla))
+      const response = await fetch(
+        `THIAGO HACE LA API PARA AGREGAR CAMPO/${seleccionarTabla.id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({field: nuevoCampo}),
+        }
       );
-      setNuevoCampo('');
-      onOpenChange();
-    } catch (error) {
-      console.error('Error', error);
-    }
-  };
-
-  const eliminarCampo = async (fieldId) => {
-    try {
-      const response = await fetch(`THIAGO HACE LA API PARA ELIMINAR CAMPO/${seleccionarTabla.id}/${fieldId}`, {
-        method: 'DELETE',
-      });
       if (!response.ok) {
-        throw new Error('ERROR AL ELIMINAR EL CAMPO');
-      }
-      const actualizarTabla = await response.json();
-      setTablas(
-        tablas.map((tabla) => (tabla.id === seleccionarTabla.id ? actualizarTabla : tabla))
-      );
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-
-  const modificarCampo = async (fieldId) => {
-    try {
-      const response = await fetch(`THIAGO HACE LA API PARA EDITAR EL CAMPO/${seleccionarTabla.id}/${fieldId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ field: editarCampo }),
-      });
-      if (!response.ok) {
-        throw new Error('ERROR AL EDITAR EL CAMPO');
+        throw new Error("ERROR AL AGREGAR UN CAMPO");
       }
       const actualizarTabla = await response.json();
       setTablas(
@@ -99,10 +69,60 @@ export default function TableManager() {
           tabla.id === seleccionarTabla.id ? actualizarTabla : tabla
         )
       );
-      setEditarCampo('');
+      setNuevoCampo("");
+      onOpenChange();
+    } catch (error) {
+      console.error("Error", error);
+    }
+  };
+
+  const eliminarCampo = async (fieldId) => {
+    try {
+      const response = await fetch(
+        `THIAGO HACE LA API PARA ELIMINAR CAMPO/${seleccionarTabla.id}/${fieldId}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (!response.ok) {
+        throw new Error("ERROR AL ELIMINAR EL CAMPO");
+      }
+      const actualizarTabla = await response.json();
+      setTablas(
+        tablas.map((tabla) =>
+          tabla.id === seleccionarTabla.id ? actualizarTabla : tabla
+        )
+      );
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const modificarCampo = async (fieldId) => {
+    try {
+      const response = await fetch(
+        `THIAGO HACE LA API PARA EDITAR EL CAMPO/${seleccionarTabla.id}/${fieldId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({field: editarCampo}),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("ERROR AL EDITAR EL CAMPO");
+      }
+      const actualizarTabla = await response.json();
+      setTablas(
+        tablas.map((tabla) =>
+          tabla.id === seleccionarTabla.id ? actualizarTabla : tabla
+        )
+      );
+      setEditarCampo("");
       onEditClose();
     } catch (error) {
-      console.error('ERROR', error);
+      console.error("ERROR", error);
     }
   };
 
@@ -129,7 +149,10 @@ export default function TableManager() {
                 <Button size="sm" onPress={() => editarTabla(tabla)}>
                   Editar
                 </Button>
-                <Button size="sm" color="danger" onPress={() => eliminarTabla(tabla.id)}>
+                <Button
+                  size="sm"
+                  color="danger"
+                  onPress={() => eliminarTabla(tabla.id)}>
                   Eliminar
                 </Button>
               </Table.Cell>
@@ -171,11 +194,13 @@ export default function TableManager() {
                         onPress={() => {
                           setEditarCampo(field.name);
                           modificarCampo(field.id);
-                        }}
-                      >
+                        }}>
                         Modificar
                       </Button>
-                      <Button size="sm" color="danger" onPress={() => eliminarCampo(field.id)}>
+                      <Button
+                        size="sm"
+                        color="danger"
+                        onPress={() => eliminarCampo(field.id)}>
                         Eliminar
                       </Button>
                     </Table.Cell>
