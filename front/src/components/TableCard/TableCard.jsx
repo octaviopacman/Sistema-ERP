@@ -39,7 +39,6 @@ function TableCard({tablaSeleccionada}) {
           ]);
         }
       });
-      console.log(dataParsed);
     }
   }, [data]);
 

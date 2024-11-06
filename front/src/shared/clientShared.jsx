@@ -1,6 +1,11 @@
 import Cookies from "js-cookie";
 
-export const handleCustomApiRequest = async ({url, method, body}) => {
+export const handleCustomApiRequest = async ({
+  url,
+  method,
+  body,
+  withToken,
+}) => {
   const cookie = Cookies.get();
   let headers = {
     "Content-Type": "application/json",
@@ -11,7 +16,7 @@ export const handleCustomApiRequest = async ({url, method, body}) => {
     "Access-Control-Request-Headers": "Content-Type",
     "Access-Control-Request-Method": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
   };
-  if (cookie) {
+  if (withToken) {
     headers.Authorization = `Bearer ${cookie.token}`;
   }
   const fetching = await fetch(url, {

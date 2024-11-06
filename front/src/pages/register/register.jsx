@@ -17,7 +17,7 @@ import {NavHome} from "../../components/Navbars/NavHome";
 export default function Register() {
   const {handleSubmit, register, formState: errors} = useForm();
   const [successMessage, setSuccessMessage] = useState("");
-  const {registrarUsuario, registerError} = useAuth();
+  const {registrarUsuario, registroError} = useAuth();
 
   const submit = handleSubmit(async (data) => {
     const peticion = await registrarUsuario(data);
@@ -44,17 +44,16 @@ export default function Register() {
             <form
               className="flex flex-col items-center gap-5"
               onSubmit={submit}>
-              {registerError &&
-                registerError.map((error, i) => {
-                  <p className="text-red-500 text-xs" key={i}>
-                    {error}
-                  </p>;
-                })}
+              {registroError.map((error, i) => {
+                <p className="text-red-500 text-xs" key={i}>
+                  {error}
+                </p>;
+              })}
               <div className="w-[100%] flex flex-col gap-5">
                 <Input
                   type="text"
                   label="Nombre"
-                  placeholder="Ingrese su nombre"
+                  placeholder="Ingrese el nombre"
                   {...register(`firstName`, {required: true})}
                 />
                 {errors.firstName && (
@@ -66,7 +65,7 @@ export default function Register() {
                 <Input
                   type="text"
                   label="Apellido"
-                  placeholder="Ingrese su apellido"
+                  placeholder="Ingrese el apellido"
                   {...register(`lastName`, {required: true})}
                 />
                 {errors.lastName && (
@@ -90,6 +89,7 @@ export default function Register() {
                   <SelectItem value="Owner">Owner</SelectItem>
                   <SelectItem value="Admin">Admin</SelectItem>
                   <SelectItem value="User">Usuario</SelectItem>
+                  <SelectItem value="Solo_ver">Solo ver</SelectItem>
                 </Select>
                 {errors.role && (
                   <p className="text-red-500 text-xs">Debes elegir un rol</p>
@@ -97,7 +97,7 @@ export default function Register() {
                 <Input
                   type="password"
                   label="Contraseña"
-                  placeholder="Ingrese su Contraseña"
+                  placeholder="Ingrese la Contraseña"
                   {...register(`password`, {required: true})}
                 />
                 {errors.password && (

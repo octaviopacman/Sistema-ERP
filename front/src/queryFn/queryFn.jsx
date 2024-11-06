@@ -2,14 +2,15 @@ import {handleCustomApiRequest} from "../Shared/ClientShared";
 
 const URL = "http://localhost:8000/api";
 
-function registerUser({body}) {
+function registerUser(body) {
   return handleCustomApiRequest({
     url: `${URL}/register`,
     method: "POST",
     body,
+    withToken: true,
   });
 }
-function iniciarSesion({body}) {
+function iniciarSesion(body) {
   return handleCustomApiRequest({
     url: `${URL}/login`,
     method: "POST",
@@ -18,7 +19,7 @@ function iniciarSesion({body}) {
 }
 function verifyCookies() {
   return handleCustomApiRequest({
-    url: `${URL}/verify`,
+    url: `${URL}/verifyToken`,
     method: "GET",
     withToken: true,
   });
@@ -45,6 +46,13 @@ function getValuesTables(tablename) {
     withToken: true,
   });
 }
+function desloguearse() {
+  return handleCustomApiRequest({
+    url: `${URL}/logout`,
+    method: "POST",
+    withToken: true,
+  });
+}
 export {
   registerUser,
   iniciarSesion,
@@ -52,4 +60,5 @@ export {
   tablesByUser,
   createTables,
   getValuesTables,
+  desloguearse,
 };

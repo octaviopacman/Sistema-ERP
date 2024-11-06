@@ -15,6 +15,7 @@ import FieldGenerate from "../../../components/FieldGenerate";
 import {useForm} from "react-hook-form";
 import {createTables, tablesByUser} from "../../../queryFn/queryFn";
 import {useNavigate} from "react-router-dom";
+import {useAuth} from "../../../context/AuthContext";
 
 export default function CrearTablas() {
   const {handleSubmit, register, setValue, getValues} = useForm();
@@ -26,6 +27,7 @@ export default function CrearTablas() {
   const [numCampos, setNumCampos] = useState(1);
   const navigate = useNavigate();
   const [tables, setTables] = useState([]);
+  const {user} = useAuth();
   // Maneja el cambio en el campo de número de campos
   const handleFieldCountChange = (e) => {
     const value = e.target.value;
@@ -100,40 +102,36 @@ export default function CrearTablas() {
     console.log("Datos enviados:", preparedData);
     if (!messageError && preparedData) {
       const data = {
-        userId: 1,
-        role: "Admin",
+        userId: user.user_id,
+        role: user.role,
       };
       const res = await createTables(data.userId, preparedData);
-      console.log(res);
       if (Array.isArray(res)) {
-        console.log("!dadsa");
         return setMessageCreateError(res);
       }
-      /*  navigate(0); */
+      navigate(0);
     }
   });
   useEffect(() => {
-    console.log(messageCreateError);
-  }, [messageCreateError]);
-
-  useEffect(() => {
-    const tablesByUserId = async () => {
-      try {
-        const data = {
-          userId: 1,
-          role: "Owner",
-        };
-        const res = await tablesByUser(data.userId, data.role);
-        if (!res) {
-          return;
+    if (user) {
+      const tablesByUserId = async () => {
+        try {
+          const data = {
+            userId: user.user_id,
+            role: user.role,
+          };
+          const res = await tablesByUser(data.userId, data.role);
+          if (!res) {
+            return;
+          }
+          setTables(res);
+        } catch (e) {
+          console.log(e);
         }
-        setTables(res);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    tablesByUserId();
-  }, []);
+      };
+      tablesByUserId();
+    }
+  }, [user]);
 
   return (
     <div className="p-5">
