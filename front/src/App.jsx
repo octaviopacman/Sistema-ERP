@@ -18,6 +18,8 @@ import DashboardRoutes from "./animations";
 import {motion} from "framer-motion";
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import "./App.css";
+import OwnerProtectRoutes from "./ProtectedRoutes/ProtectedRoute";
+import ProtectedRoutes from "./ProtectedRoutes/ProtectedRoute";
 
 const pageTransition = {
   in: {opacity: 1, x: 0},
@@ -35,74 +37,78 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={<Dashboard />}>
-            <Route
-              path="/dashboard/estadisticas"
-              element={
-                <motion.div
-                  initial="out"
-                  animate="in"
-                  exit="out"
-                  variants={pageTransition}
-                  transition={transition}>
-                  <Estadisticas />
-                </motion.div>
-              }
-            />
+          <Route element={<OwnerProtectRoutes />}>
+            <Route path="/register" element={<Register />} />
+          </Route>
+          <Route element={<ProtectedRoutes />}>
+            <Route path="/dashboard" element={<Dashboard />}>
+              <Route
+                path="/dashboard/estadisticas"
+                element={
+                  <motion.div
+                    initial="out"
+                    animate="in"
+                    exit="out"
+                    variants={pageTransition}
+                    transition={transition}>
+                    <Estadisticas />
+                  </motion.div>
+                }
+              />
 
-            <Route
-              path="/dashboard/"
-              element={
-                <motion.div
-                  initial="out"
-                  animate="in"
-                  exit="out"
-                  variants={pageTransition}
-                  transition={transition}>
-                  <Estadisticas />
-                </motion.div>
-              }
-            />
-            <Route
-              path="/dashboard/creador"
-              element={
-                <motion.div
-                  initial="out"
-                  animate="in"
-                  exit="out"
-                  variants={pageTransition}
-                  transition={transition}>
-                  <CrearTablas />
-                </motion.div>
-              }
-            />
-            <Route
-              path="/dashboard/inspector"
-              element={
-                <motion.div
-                  initial="out"
-                  animate="in"
-                  exit="out"
-                  variants={pageTransition}
-                  transition={transition}>
-                  <Inspector />
-                </motion.div>
-              }
-            />
-            <Route
-              path="/dashboard/inspector/:tablaId"
-              element={
-                <motion.div
-                  initial="out"
-                  animate="in"
-                  exit="out"
-                  variants={pageTransition}
-                  transition={transition}>
-                  <Inspector />
-                </motion.div>
-              }
-            />
+              <Route
+                path="/dashboard/"
+                element={
+                  <motion.div
+                    initial="out"
+                    animate="in"
+                    exit="out"
+                    variants={pageTransition}
+                    transition={transition}>
+                    <Estadisticas />
+                  </motion.div>
+                }
+              />
+              <Route
+                path="/dashboard/creador"
+                element={
+                  <motion.div
+                    initial="out"
+                    animate="in"
+                    exit="out"
+                    variants={pageTransition}
+                    transition={transition}>
+                    <CrearTablas />
+                  </motion.div>
+                }
+              />
+              <Route
+                path="/dashboard/inspector"
+                element={
+                  <motion.div
+                    initial="out"
+                    animate="in"
+                    exit="out"
+                    variants={pageTransition}
+                    transition={transition}>
+                    <Inspector />
+                  </motion.div>
+                }
+              />
+              <Route
+                path="/dashboard/inspector/:tablaId"
+                element={
+                  <motion.div
+                    initial="out"
+                    animate="in"
+                    exit="out"
+                    variants={pageTransition}
+                    transition={transition}>
+                    <Inspector />
+                  </motion.div>
+                }
+              />
+            </Route>
           </Route>
         </Routes>
       </Router>

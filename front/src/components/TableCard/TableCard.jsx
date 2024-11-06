@@ -26,7 +26,6 @@ function TableCard({tablaSeleccionada}) {
   }, [tablaSeleccionada]);
 
   useEffect(() => {
-    console.log(data);
     if (data.length > 0) {
       setDataParsed([]);
       data.map((fila) => {
@@ -39,7 +38,6 @@ function TableCard({tablaSeleccionada}) {
           ]);
         }
       });
-      console.log(dataParsed);
     }
   }, [data]);
 

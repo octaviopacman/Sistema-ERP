@@ -17,6 +17,3 @@ export const validateSchema = (schema) => (req, res, next) => {
 
   return res.status(403).json({ message: "Forbidden" });
 }; */
-
-
-

@@ -13,27 +13,30 @@ import {
 import {tablesByUser} from "../../../queryFn/queryFn";
 import {useParams} from "react-router-dom";
 import TableCard from "../../../components/TableCard/TableCard";
+import {useAuth} from "../../../context/AuthContext";
 
 export default function Inspector() {
   const [tables, setTables] = useState([]);
   const [tablaSeleccionada, setTablaSeleccionada] = useState(null);
+  const {user} = useAuth();
 
   const params = useParams();
 
   useEffect(() => {
-    const getTables = async () => {
-      const res = await tablesByUser(1, "Owner");
-      if (res) {
-        setTables(res);
-      }
-    };
-    getTables();
-  }, []);
+    if (user) {
+      const getTables = async () => {
+        const res = await tablesByUser(user.user_id, user.role);
+        if (res) {
+          setTables(res);
+        }
+      };
+      getTables();
+    }
+  }, [user]);
   useEffect(() => {
     if (params.tablaId) {
       const tabla = tables.find((t) => t.tabla_id === Number(params.tablaId));
       setTablaSeleccionada(tabla);
-      console.log(tabla);
     }
   }, [params, tables]);
 

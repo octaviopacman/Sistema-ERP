@@ -1,5 +1,10 @@
 import {createContext, useContext, useEffect, useState} from "react";
-import {iniciarSesion, registerUser, verifyCookies} from "../queryFn/queryFn";
+import {
+  desloguearse,
+  iniciarSesion,
+  registerUser,
+  verifyCookies,
+} from "../queryFn/queryFn";
 import Cookie from "js-cookie";
 
 const AuthContext = createContext();
@@ -40,13 +45,14 @@ export const AuthProvider = ({children}) => {
         return setLoginError(peticion);
       }
       setIsAuthenticated(true);
-      setUser(peticion);
+      setUser(peticion.user);
       Cookie.set("token", peticion.token);
     } catch (error) {
       console.log(error);
     }
   };
-  const cerrarSesion = () => {
+  const cerrarSesion = async () => {
+    await desloguearse();
     setUser(null);
     Cookie.remove("token");
     setIsAuthenticated(false);
@@ -76,6 +82,7 @@ export const AuthProvider = ({children}) => {
         setIsAuthenticated(false);
         setUser(null);
         setLoading(false);
+        return;
       }
       const data = await verifyCookies();
       if (!data) {
@@ -96,6 +103,8 @@ export const AuthProvider = ({children}) => {
       value={{
         registrarUsuario,
         loginUsuario,
+        loginError,
+        registroError,
         cerrarSesion,
         user,
         isAuthenticated,
