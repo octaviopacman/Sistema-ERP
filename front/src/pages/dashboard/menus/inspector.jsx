@@ -19,7 +19,6 @@ export default function Inspector() {
   const [tables, setTables] = useState([]);
   const [tablaSeleccionada, setTablaSeleccionada] = useState(null);
   const {user} = useAuth();
-  console.log(user);
 
   const params = useParams();
 
@@ -38,7 +37,6 @@ export default function Inspector() {
     if (params.tablaId) {
       const tabla = tables.find((t) => t.tabla_id === Number(params.tablaId));
       setTablaSeleccionada(tabla);
-      console.log(tabla);
     }
   }, [params, tables]);
 

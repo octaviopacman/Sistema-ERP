@@ -40,9 +40,7 @@ export const AuthProvider = ({children}) => {
   };
   const loginUsuario = async (data) => {
     try {
-      console.log(data);
       const peticion = await iniciarSesion(data);
-      console.log(peticion);
       if (peticion.length > 0) {
         return setLoginError(peticion);
       }
@@ -99,7 +97,6 @@ export const AuthProvider = ({children}) => {
     }
     verificarCookies();
   }, []);
-  console.log(loginError);
 
   return (
     <AuthContext.Provider

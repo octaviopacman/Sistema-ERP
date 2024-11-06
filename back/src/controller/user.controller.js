@@ -33,7 +33,6 @@ export const loginUser = async (req, res, next) => {
   try {
     const {email, password: passwordSended} = req.body;
     const userFound = await User.findOne({where: {email}});
-    console.log(userFound);
     if (!userFound) return res.status(404).json(["No se encontró el usuario"]);
     const isMatch = bcrypt.compareSync(passwordSended, userFound.password);
     if (!userFound || !isMatch) {
@@ -73,10 +72,8 @@ export const verifyToken = async (req, res) => {
   if (!token) return res.status(401).json(["Unauthorized"]);
 
   jwt.verify(token, process.env.SECRET_KEY, async (err, user) => {
-    console.log(err);
     if (err) return res.status(401).json(["Unauthorized"]);
     const userFound = await User.findOne({where: {email: user.email}});
-    console.log(userFound);
     if (!userFound) return res.status(401).json(["Unauthorized"]);
 
     return res.json(userFound);

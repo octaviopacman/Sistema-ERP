@@ -14,7 +14,6 @@ export function NavHome() {
   const location = useLocation();
   const path = location.pathname;
   const {user, cerrarSesion} = useAuth();
-  console.log(user);
 
   const returnButtons = () => {
     if (!user && path !== "/login") {
