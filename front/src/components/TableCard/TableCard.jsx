@@ -1,4 +1,4 @@
-/* import {
+import {
   Button,
   Table,
   TableBody,
@@ -6,12 +6,12 @@
   TableColumn,
   TableHeader,
   TableRow,
-} from "@nextui-org/react"; */
+} from "@nextui-org/react";
 
-import {useEffect, useState} from "react";
-import {getValuesTables} from "../../queryFn/queryFn";
+import { useEffect, useState } from "react";
+import { getValuesTables } from "../../queryFn/queryFn";
 
-function TableCard({tablaSeleccionada}) {
+function TableCard({ tablaSeleccionada }) {
   const [data, setData] = useState([]);
   const [dataParsed, setDataParsed] = useState([]);
 
@@ -45,20 +45,34 @@ function TableCard({tablaSeleccionada}) {
     <>
       {tablaSeleccionada && (
         <div className="tabla ">
-          <h2 className="bg-[#18181b] text-center text-white mt-5 rounded">
-            {tablaSeleccionada.nombre_tabla}
-          </h2>
+          <div className="w-full bg-dark flex justify-between items-center content-center flex-row ">
+
+            <h2 className="bg-[#18181b] text-center text-white mt-5 rounded h-full">
+              {tablaSeleccionada.nombre_tabla}
+            </h2>
+
+            <Button color="danger">
+              Borrar Tabla
+            </Button>
+
+          </div>
           <table
             aria-label="Example table with dynamic content"
             className="border-2 border-zinc-950">
             <tr>
-              {tablaSeleccionada.campos.map((column) => {
+              {tablaSeleccionada.campos.map((column, i) => {
                 if (!column.foreignkey) {
                   return (
                     <th
                       className="border-2 rounded border-zinc-950"
                       key={column.name}>
                       {column.name}
+                      {i === tablaSeleccionada.campos.length - 1 && (
+                        <div></div>
+
+                      )
+
+                      }
                     </th>
                   );
                 } else {
