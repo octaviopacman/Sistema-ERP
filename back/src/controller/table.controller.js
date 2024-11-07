@@ -76,15 +76,17 @@ export const tableCreate = async (req, res) => {
 
       if (column.autoIncrement) {
         // Campo con autoincremento
-        query = `${column.name} SERIAL ${column.notNull ? "NOT NULL" : ""} ${
-          column.primaryKey ? "PRIMARY KEY" : ""
-        }`.trim();
+        query = `${column.name} SERIAL ${column.notNull ? "NOT NULL " : ""}  ${
+          column.unique ? "UNIQUE " : ""
+        }${column.primaryKey ? "PRIMARY KEY" : ""}`.trim();
         if (query) campos.push(query);
       } else {
         // Campo normal
-        query = `${column.name} ${column.dataType} ${
-          column.notNull ? "NOT NULL" : ""
-        } ${column.primaryKey ? "PRIMARY KEY" : ""}`.trim();
+        query = `${column.name} ${column.dataType}${
+          column.length ? `(${column.length})` : ""
+        } ${column.unique ? "UNIQUE " : ""} ${
+          column.notNull ? "NOT NULL " : ""
+        } ${column.primaryKey ? "PRIMARY KEY " : ""}`.trim();
         if (query) campos.push(query);
       }
 
@@ -148,7 +150,7 @@ export const getTablesByUserID = async (req, res) => {
     const visibilidad = Number(manejarNiveles(rol));
 
     const tablaByUser = await TablesUser.findAll({
-      where: {creador_id: user_id, visibilidad: {[Op.gte]: visibilidad}},
+      where: {visibilidad: {[Op.gte]: visibilidad}},
     });
     if (tablaByUser.length === 0) return res.status(400).json([]);
 

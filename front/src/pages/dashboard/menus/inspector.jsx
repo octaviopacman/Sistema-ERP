@@ -25,6 +25,7 @@ export default function Inspector() {
   useEffect(() => {
     if (user) {
       const getTables = async () => {
+        console.log(user);
         const res = await tablesByUser(user.user_id, user.role);
         if (res) {
           setTables(res);

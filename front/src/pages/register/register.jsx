@@ -115,19 +115,6 @@ export default function Register() {
               </Button>
             </form>
           </CardBody>
-          <CardFooter className="flex items-center justify-center m-0 p-0">
-            <Link to="/login">
-              <p
-                className=" 
-            text-xs	
-            text-black hover:text-sky-600
-            text-center
-            ">
-                ¿Ya tienes cuenta?
-                <br /> Iniciar Sesion.
-              </p>
-            </Link>
-          </CardFooter>
         </Card>
       </div>
     </>

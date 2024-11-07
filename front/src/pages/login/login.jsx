@@ -35,7 +35,7 @@ export default function Login() {
       <div>
         <div className="flex flex-col flex-nowrap justify-center items-center h-[100vh] w-[100vw]">
           <Card
-            className="w-[20rem] h-[27rem]
+            className="w-[20rem] h-[25rem]
         p-5 space-y-5 rounded-xl 
         shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]">
             <CardHeader className="flex items-center justify-center">
@@ -85,19 +85,6 @@ export default function Login() {
                 </Button>
               </form>
             </CardBody>
-            <CardFooter className="flex items-center justify-center m-0 p-0">
-              <Link to="/register">
-                <p
-                  className=" 
-            text-xs	
-            text-black hover:text-sky-600
-            text-center
-            ">
-                  ¿No tienes cuenta?
-                  <br /> Registrate.
-                </p>
-              </Link>
-            </CardFooter>
           </Card>
         </div>
       </div>

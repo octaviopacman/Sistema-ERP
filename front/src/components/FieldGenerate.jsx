@@ -22,30 +22,65 @@ function FieldGenerate({
   const [foreign, setForeign] = useState(false);
   const [selectedTable, setSelectedTable] = useState(null);
   const [selectedForeignTable, setSelectedForeignTable] = useState(null);
+  const [selectedField, setSelectedField] = useState(null);
   const [load, setLoad] = useState(true);
   const [foreignLoad, setForeignLoad] = useState(true);
+  const [isAutoIncrement, setIsAutoIncrement] = useState(false);
 
   const TablaSeleccionada = (e) => {
     const tabla = tables.find((tabla) => tabla.nombre_tabla === e.target.value);
     setSelectedTable(e.target.value);
+    const campos = [];
     const campoPrimario = tabla.campos.find((c) => c.primaryKey === true);
-    setSelectedForeignTable(campoPrimario);
+    const campoUnique = tabla.campos.find(
+      (c) => c.unique === true && c.name != campoPrimario.name
+    );
+    if (campoPrimario) {
+      campos.push(campoPrimario);
+    }
+    if (campoUnique) {
+      campos.push(campoUnique);
+    }
+    campoPrimario.pk = "PK";
+    setSelectedForeignTable(campos);
+    console.log(selectedForeignTable);
     setLoad(false);
+  };
+  const Cambiar = (e) => {
+    const campo = selectedForeignTable.find((f) => f.name === e.target.value);
+    setSelectedField(campo);
+    console.log(campo);
+    let type = campo.dataType ? campo.dataType : "Int";
+    setValue(`fields[${count}].foreignKeyType`, type);
+  };
+  const returnInputs = () => {
+    if (selectedField.dataType) {
+      return (
+        <Input
+          id={`field-name-${count}`}
+          placeholder="Type"
+          disabled
+          value={selectedField.dataType}
+          {...register(`fields[${count}].foreignKeyType`, {
+            value: selectedField.dataType,
+          })}
+        />
+      );
+    } else {
+      return <Input disabled value={"Int"} />;
+    }
   };
 
   useEffect(() => {
-    if (selectedForeignTable) {
-      setValue(
-        `fields[${count}].foreignKeyType`,
-        selectedForeignTable.dataType
-      );
+    if (selectedField) {
+      setValue(`fields[${count}].foreignKeyType`, selectedField.dataType);
       setValue(`fields[${count}].name`, "");
       setValue(`fields[${count}].primaryKey`, false);
       setValue(`fields[${count}].notNull`, false);
       setValue(`fields[${count}].length`, "");
       setValue(`fields[${count}].dataType`, "");
       setValue(`fields[${count}].autoIncrement`, false);
-      setValue(`fields[${count}].nameForeign`, selectedForeignTable.name);
+      setValue(`fields[${count}].nameForeign`, selectedField.name);
     }
     if ((!selectedForeignTable && !load) || (!foreign && !foreignLoad)) {
       setValue(`fields[${count}].foreignkey`, false);
@@ -60,6 +95,14 @@ function FieldGenerate({
       setValue(`fields[${count}].autoIncrement`, false);
     }
   }, [selectedForeignTable]);
+
+  useEffect(() => {
+    if (isAutoIncrement) {
+      setValue(`fields[${count}].autoIncrement`, true);
+      setValue(`fields[${count}].dataType`, "");
+      setValue(`fields[${count}].length`, "");
+    }
+  }, [isAutoIncrement]);
 
   useEffect(() => {
     if (foreign && !selectedForeignTable) {
@@ -120,28 +163,22 @@ function FieldGenerate({
           </div>
           {selectedTable && selectedForeignTable && (
             <>
-              <Input
-                id={`field-name-${count}`}
-                placeholder="Type"
+              <Select
+                id={`field-foreign-table-${count}`}
                 label="Campo de la tabla"
-                disabled
-                value={selectedForeignTable.name}
                 {...register(`fields[${count}].nameForeign`, {
                   onChange: (e) => {
-                    setSelectedForeignTable(e.target.value);
+                    Cambiar(e);
                   },
-                  value: selectedForeignTable.name,
-                })}
-              />
-              <Input
-                id={`field-name-${count}`}
-                placeholder="Type"
-                disabled
-                value={selectedForeignTable.dataType}
-                {...register(`fields[${count}].foreignKeyType`, {
-                  value: selectedForeignTable.dataType,
-                })}
-              />
+                })}>
+                {selectedForeignTable &&
+                  selectedForeignTable.map((campo) => (
+                    <SelectItem key={campo.name} value={campo.name}>
+                      {`${campo.name} ${campo.pk ? ` (${campo.pk})` : " "}`}
+                    </SelectItem>
+                  ))}
+              </Select>
+              {selectedField && returnInputs()}
             </>
           )}
           {!selectedForeignTable && selectedTable && (
@@ -159,35 +196,51 @@ function FieldGenerate({
               {...register(`fields[${count}].name`)}
             />
           </div>
-          <div>
-            <Autocomplete
-              id={`field-type-${count}`}
-              defaultItems={mysqlDataTypes}
-              label="Tipo de dato"
-              {...register(`fields[${count}].dataType`)}>
-              {(datatype) => (
-                <AutocompleteItem key={datatype.value}>
-                  {datatype.label}
-                </AutocompleteItem>
-              )}
-            </Autocomplete>
-          </div>
-          <div>
-            <Input
-              type="Number"
-              label="Cantidad"
-              id={`field-length-${count}`}
-              placeholder="Ingrese la longitud"
-              {...register(`fields[${count}].length`)}
-            />
-          </div>
+          {!isAutoIncrement && (
+            <>
+              <div>
+                <Autocomplete
+                  id={`field-type-${count}`}
+                  defaultItems={mysqlDataTypes}
+                  label="Tipo de dato"
+                  {...register(`fields[${count}].dataType`)}>
+                  {(datatype) => (
+                    <AutocompleteItem key={datatype.value}>
+                      {datatype.label}
+                    </AutocompleteItem>
+                  )}
+                </Autocomplete>
+              </div>
+              <div>
+                <Input
+                  type="Number"
+                  label="Cantidad"
+                  id={`field-length-${count}`}
+                  placeholder="Ingrese la longitud"
+                  {...register(`fields[${count}].length`)}
+                />
+              </div>
+            </>
+          )}
           <div className="flex gap-5 ml-4">
             <div className="flex flex-col items-center gap-2">
               <label className="h-fit">Auto Increment</label>
               <Checkbox
                 className="h-fit"
                 id={`field-autoincrement-${count}`}
-                {...register(`fields[${count}].autoIncrement`)}
+                {...register(`fields[${count}].autoIncrement`, {
+                  onChange: (e) => {
+                    setIsAutoIncrement(e.target.checked);
+                  },
+                })}
+              />
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <label className="h-fit">Unique</label>
+              <Checkbox
+                className="h-fit"
+                id={`field-unique-${count}`}
+                {...register(`fields[${count}].unique`)}
               />
             </div>
             <div className="flex col items-center gap-2">

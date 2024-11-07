@@ -2,6 +2,7 @@ import {Divider} from "@nextui-org/react";
 import {Link} from "react-router-dom";
 
 export default function Sidebar({tables, params}) {
+  console.log(tables);
   return (
     <section className="h-screen  w-64 bg-[#18181b] rounded-r-lg pt-7 left-0 top-0 ">
       <h2 className="bg-[#18181b]  text-white text-center">Tablas para ver</h2>
